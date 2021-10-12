@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace App.Data
+namespace Database
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class POSDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public POSDbContext(DbContextOptions<POSDbContext> options)
             : base(options)
         {
         }
