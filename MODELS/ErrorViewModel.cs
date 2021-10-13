@@ -1,6 +1,6 @@
 using System;
 
-namespace Entity
+namespace MODELS
 {
     public class ErrorViewModel
     {

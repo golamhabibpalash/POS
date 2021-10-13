@@ -1,4 +1,4 @@
-﻿using Entity;
+﻿using MODELS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Controllers
+namespace APP.Controllers
 {
     public class HomeController : Controller
     {

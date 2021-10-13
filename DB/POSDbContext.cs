@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity
+namespace DB
 {
-    public class Product : BaseProps
+    public class POSDbContext : DbContext
     {
-        public string ProductName { get; set; }
     }
 }
