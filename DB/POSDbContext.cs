@@ -9,5 +9,9 @@ namespace DB
 {
     public class POSDbContext : DbContext
     {
+        public POSDbContext(DbContextOptions<POSDbContext> options) : base(options)
+        {
+
+        }
     }
 }
