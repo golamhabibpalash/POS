@@ -63,6 +63,8 @@ namespace APP
 
             app.UseAuthorization();
 
+
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
