@@ -20,6 +20,7 @@ namespace APP.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
