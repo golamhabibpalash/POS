@@ -26,6 +26,11 @@ namespace APP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
+
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
