@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.IRepository
+namespace BLL.IManagers
 {
-    public interface IRepository<T> where T:class
+    public interface IManager<T> where T:class
     {
         Task<T> GetByIdAsync(int id);
         Task<List<T>> GetAllAsync();

@@ -1,4 +1,4 @@
-﻿using DAL.IRepository;
+﻿using DAL.IRepositories;
 using DB;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repository
+namespace DAL.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
