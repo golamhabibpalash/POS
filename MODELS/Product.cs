@@ -14,8 +14,8 @@ namespace MODELS
         public string Image { get; set; }
         public string BarCode { get; set; }
 
-        [Display(Name = "Quantity")]
-        public int Qty { get; set; }
+        //[Display(Name = "Quantity")]
+        //public int Qty { get; set; }
 
         [Display(Name = "Alart Qty")]
         public int AlertQty { get; set; }
@@ -48,8 +48,16 @@ namespace MODELS
         public bool IsAvailable { get; set; }
         public string Description { get; set; }
 
+        [Display(Name = "Color")]
+        public int ProductColorId { get; set; }
+
+        [Display(Name = "Size")]
+        public int ProductSizeId { get; set; }
+
         public Category Category { get; set; }
         public Brand Brand { get; set; }
         public ProductType ProductType { get; set; }
+        public ProductColor ProductColor { get; set; }
+        public ProductSize ProductSize { get; set; }
     }
 }
