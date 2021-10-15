@@ -28,6 +28,12 @@ namespace MODELS
 
         [Display(Name = "Expiry Date")]
         public DateTime ExpiryDate { get; set; }
+        
+        [Display(Name = "Purchase Price")]
+        public double UnitPurchasePrice { get; set; }
+
+        [Display(Name = "Selling Price")]
+        public double UnitSellingPrice { get; set; }
 
         [Display(Name = "Brand")]
         public int? BrandId { get; set; }
