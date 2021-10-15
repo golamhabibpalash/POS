@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AutoMapperSetting\" />
-    <Folder Include="PagginationSetting\" />
-    <Folder Include="SessionSetting\" />
+    <Compile Remove="AutoMapperSetting\**" />
+    <Compile Remove="PagginationSetting\**" />
+    <Compile Remove="SessionSetting\**" />
+    <EmbeddedResource Remove="AutoMapperSetting\**" />
+    <EmbeddedResource Remove="PagginationSetting\**" />
+    <EmbeddedResource Remove="SessionSetting\**" />
+    <None Remove="AutoMapperSetting\**" />
+    <None Remove="PagginationSetting\**" />
+    <None Remove="SessionSetting\**" />
   </ItemGroup>
 
   <ItemGroup>
