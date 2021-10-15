@@ -43,8 +43,9 @@ namespace APP
                     Configuration.GetConnectionString("POSConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<POSDbContext>();
+
             services.AddControllersWithViews();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();

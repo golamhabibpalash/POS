@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="VIewModels\" />
     <Folder Include="wwwroot\Theme\" />
   </ItemGroup>
 
