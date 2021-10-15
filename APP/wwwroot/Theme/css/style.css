@@ -465,7 +465,7 @@ body a:hover{
 		box-shadow:0 0 5px 0 rgba(0,0,0,0.05),0 4px 4px -3px rgba(0,0,0,0.1)
 	}
 .main-grid{
-    padding: 3em;
+    padding: 1em;
 }
 .dashboard-page .title-bar {
     position: relative;
@@ -3561,7 +3561,7 @@ button.note-color-btn {
 }
 .content2 input[type="email"] {
 	padding: 10px;
-    width: 90%;
+    width: 100%;
     border: 1px solid black;
     color: #000;
 	text-align:left;
@@ -3571,7 +3571,7 @@ button.note-color-btn {
 }
 .content2 input[type="password"] {
 	padding: 10px;
-    width: 90%;
+    width: 100%;
     border: 1px solid black;
     color: #000;
 	text-align:left;
@@ -3581,9 +3581,9 @@ button.note-color-btn {
 }
 .register {
     padding: 8px;
-    background-color: #fcb216;
-    border: solid 2px #fcb216;
-    width: 90%;
+    background-color: darkslategray;
+    border: solid 2px darkslategray;
+    width: 100%;
     cursor: pointer;
     color: #fff;
     font-size: 20px;
@@ -3594,7 +3594,7 @@ button.note-color-btn {
 }
 .signup-heading {
     padding: 2em 0;
-    background: #fcb216;
+    background: darkslategray;
 }
 .register:hover {
     border: solid 2px #000;
@@ -3626,7 +3626,7 @@ body.signup-body {
 	background-size:cover;
 }
 .signup-heading h2{
-	color: #000000;
+	color: #fff;
     margin: 0;
 }
 .content2 form{
@@ -3649,7 +3649,7 @@ body.signup-body {
 }
 .text-left {
     float: left;
-    text-align: center;
+    text-align: left;
 }
 .signin-text p {
     font-size: .9em;

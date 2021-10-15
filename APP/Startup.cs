@@ -37,6 +37,7 @@ namespace APP
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddHealthChecks();
 
             services.AddDbContext<POSDbContext>(options =>
                 options.UseSqlServer(
@@ -49,9 +50,9 @@ namespace APP
             services.AddControllersWithViews();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            services.AddMvc();
             //Code for Live Reload
-            services.AddLiveReload();
+            //services.AddLiveReload();
 
         }
 
@@ -70,7 +71,7 @@ namespace APP
                 app.UseHsts();
             }
             //Code for Live Reload
-            app.UseLiveReload();
+            //app.UseLiveReload();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
