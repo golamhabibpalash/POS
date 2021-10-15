@@ -1,11 +1,7 @@
-﻿using APP.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+using MODELS;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace APP.Controllers
 {
@@ -20,6 +16,7 @@ namespace APP.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogWarning("This is text warning");
             return View();
         }
 
