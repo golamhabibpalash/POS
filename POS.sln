@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{F7A2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{9044AF47-5B7E-4A6D-A265-C1FC85204AFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APP", "APP\APP.csproj", "{DF9BADDD-8610-426E-9FB3-57A6D65B9779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{9044AF47-5B7E-4A6D-A265-C1FC85204AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9044AF47-5B7E-4A6D-A265-C1FC85204AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9044AF47-5B7E-4A6D-A265-C1FC85204AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9BADDD-8610-426E-9FB3-57A6D65B9779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9BADDD-8610-426E-9FB3-57A6D65B9779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9BADDD-8610-426E-9FB3-57A6D65B9779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9BADDD-8610-426E-9FB3-57A6D65B9779}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
