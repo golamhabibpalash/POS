@@ -1,0 +1,48 @@
+﻿@model APP.VIewModels.RegisterVM
+@{
+    ViewBag.Title = "Register New User";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+<form asp-action="Register" asp-controller="Account" method="post" class="login100-form validate-form">
+
+    <span class="login100-form-logo">
+        <i class="zmdi zmdi-landscape"></i>
+    </span>
+
+    <span class="login100-form-title p-b-34 p-t-27">
+        Register
+    </span>
+    <div asp-validation-summary="All" class="text-left text-danger"></div>
+
+    <div class="wrap-input100 validate-input" data-validate="Enter username">
+        <input asp-for="Email" class="input100" placeholder="Email">
+        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+        <span asp-validation-for="Email" class="text-danger text-left"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input" data-validate="Enter password">
+        <input class="input100" asp-for="Password" placeholder="Password">
+        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+        <span asp-validation-for="Password" class="text-danger text-left"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input" data-validate="Enter password">
+        <input class="input100" asp-for="ConfirmPassword" placeholder="Password">
+        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+        <span asp-validation-for="ConfirmPassword" class="text-danger text-left"></span>
+    </div>
+
+
+    <div class="container-login100-form-btn">
+        <button class="login100-form-btn">
+            Signup
+        </button>
+    </div>
+
+
+    <div class="text-center">
+        <a asp-action="login" asp-controller="Account" class="btn">Back To Login</a>
+    </div>
+</form>

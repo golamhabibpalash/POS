@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Theme\" />
+    <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using APP.VIewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace APP.Controllers
 {
-    public class AccountsController : Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountsController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -23,6 +24,7 @@ namespace APP.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -41,13 +43,6 @@ namespace APP.Controllers
                 }
             }
             return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Login()
@@ -71,5 +66,12 @@ namespace APP.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
