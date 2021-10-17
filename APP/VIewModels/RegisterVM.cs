@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace APP.VIewModels
     public class RegisterVM
     {
         [Required, EmailAddress]
+        [Remote(action:"IsEmailUsed",controller:"Account")]
         public string Email { get; set; }
 
         [Required,DataType(DataType.Password)]

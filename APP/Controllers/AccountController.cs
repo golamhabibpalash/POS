@@ -25,7 +25,21 @@ namespace APP.Controllers
         {
             return View();
         }
-        
+        [AcceptVerbs("Get","Post")]
+        public async Task<IActionResult> IsEmailUsed(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already in user");
+            }
+            
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -59,7 +73,7 @@ namespace APP.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(returnUrl))
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
                         return Redirect(returnUrl);
                     }
