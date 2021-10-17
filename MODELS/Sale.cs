@@ -15,6 +15,6 @@ namespace MODELS
         [Display(Name = "Date")]
         public DateTime SaleDate { get; set; }
 
-        public List<SaleDetails> SaleDetails { get; set; }
+        public List<SaleDetail> SaleDetails { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MODELS
 {
-    public class SaleDetails : CommonProps
+    public class SaleDetail : CommonProps
     {
 
         [Display(Name = "Sale Code")]

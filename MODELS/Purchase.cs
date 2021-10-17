@@ -22,6 +22,6 @@ namespace MODELS
         public double PurchaseAmount { get; set; }
 
         public Supplier Supplier { get; set; }
-        public List<PurchaseDetails> PurchaseDetails { get; set; }
+        public List<PurchaseDetail> PurchaseDetails { get; set; }
     }
 }
