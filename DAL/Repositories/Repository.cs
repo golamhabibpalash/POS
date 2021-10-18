@@ -23,7 +23,7 @@ namespace DAL.Repositories
             get { return _context.Set<T>(); }
         }
 
-        public async Task<bool> AddAsync(T model)
+        public virtual async Task<bool> AddAsync(T model)
         {
             Table.Add(model);
             int isSaved = await _context.SaveChangesAsync();
@@ -34,17 +34,17 @@ namespace DAL.Repositories
             return false;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             return await Table.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await Table.FindAsync(id);
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public virtual async Task<bool> RemoveAsync(int id)
         {
             var result = await Table.FindAsync(id);
             if (result!=null)
@@ -59,7 +59,7 @@ namespace DAL.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateAsync(T model)
+        public virtual async Task<bool> UpdateAsync(T model)
         {
             Table.Update(model);
             int isUpdated = await _context.SaveChangesAsync();

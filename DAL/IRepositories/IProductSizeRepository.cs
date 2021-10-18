@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.IRepositories
 {
-    public interface IProductSizeRepository : IRepository<ProductColor>
+    public interface IProductSizeRepository : IRepository<ProductSize>
     {
     }
 }
