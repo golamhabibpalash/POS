@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DB\DB.csproj" />
+    <ProjectReference Include="..\MODELS\MODELS.csproj" />
   </ItemGroup>
 
 </Project>
