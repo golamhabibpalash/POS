@@ -13,7 +13,6 @@ namespace APP.Controllers
     public class ProductsController : Controller
     {
         private readonly POSDbContext _context;
-
         public ProductsController(POSDbContext context)
         {
             _context = context;
