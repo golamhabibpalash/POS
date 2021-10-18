@@ -56,41 +56,22 @@
                     </span>
                 </a>
             </li>
-            <li class="has-subnav">
-                <a href="javascript:;">
-                    <i class="fa fa-cogs" aria-hidden="true"></i>
-                    <span class="nav-text">
-                        UI Components
-                    </span>
-                    <i class="icon-angle-right"></i><i class="icon-angle-down"></i>
-                </a>
-                <ul>
-                    <li>
-                        <a class="subnav-text" href="buttons.html">
-                            Buttons
-                        </a>
-                    </li>
-                    <li>
-                        <a class="subnav-text" href="grids.html">
-                            Grids
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
+
             <li class="has-subnav">
                 <a href="javascript:;">
                     <i class="fa fa-check-square-o nav_icon"></i>
                     <span class="nav-text">
-                        Forms
+                        Products
                     </span>
                     <i class="icon-angle-right"></i><i class="icon-angle-down"></i>
                 </a>
                 <ul>
                     <li>
-                        <a class="subnav-text" href="inputs.html">Inputs</a>
+                        <a class="subnav-text" asp-action="Index" asp-controller="Products" >Product List</a>
                     </li>
                     <li>
-                        <a class="subnav-text" href="validation.html">Form Validation</a>
+                        <a class="subnav-text" asp-action="Create" asp-controller="Products">Add New</a>
                     </li>
                 </ul>
             </li>
@@ -124,42 +105,42 @@
                 </ul>
             </li>
             <li>
-                <a href="charts.html">
+                <a asp-controller="Brands" asp-action="Index">
                     <i class="fa fa-bar-chart nav_icon"></i>
                     <span class="nav-text">
-                        Charts
+                        Brand
                     </span>
                 </a>
             </li>
             <li>
-                <a href="typography.html">
+                <a asp-controller="Categories" asp-action="Index">
                     <i class="icon-font nav-icon"></i>
                     <span class="nav-text">
-                        Typography
+                        Category
                     </span>
                 </a>
             </li>
             <li>
-                <a href="tables.html">
+                <a asp-controller="Purchases" asp-action="Index" >
                     <i class="icon-table nav-icon"></i>
                     <span class="nav-text">
-                        Tables
+                        Purchase
                     </span>
                 </a>
             </li>
             <li>
-                <a href="maps.html">
+                <a asp-controller="Sales" asp-action="Index">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <span class="nav-text">
-                        Maps
+                        Sales
                     </span>
                 </a>
             </li>
             <li>
-                <a href="error.html">
+                <a asp-controller="Suppliers" asp-action="Index">
                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     <span class="nav-text">
-                        Error Page
+                        Supplier
                     </span>
                 </a>
             </li>
@@ -175,6 +156,27 @@
                     </li>
                     <li>
                         <a class="subnav-text" href="blank.html">Blank Page</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-subnav">
+                <a href="javascript:;">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    <span class="nav-text">
+                        Settings
+                    </span>
+                    <i class="icon-angle-right"></i><i class="icon-angle-down"></i>
+                </a>
+                <ul>
+                    <li>
+                        <a class="subnav-text" href="buttons.html">
+                            Buttons
+                        </a>
+                    </li>
+                    <li>
+                        <a class="subnav-text" href="grids.html">
+                            Grids
+                        </a>
                     </li>
                 </ul>
             </li>
