@@ -1,19 +1,16 @@
 /*
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
+Author: GH Palash
 */
 h4, h5, h6,
 h1, h2, h3 {margin: 0;}
 ul, ol {margin: 0;}
 p {margin: 0;}
 
-html, body{
-	font-family: 'Roboto', sans-serif;
-    font-size: 100%;
-    overflow-x: hidden;
-    background: #f4f7f9;
+html, body {
+	font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+	font-size: 13px;
+	overflow-x: hidden;
+	background: #f4f7f9;
 }
 body a{
 	transition: 0.5s all ease;

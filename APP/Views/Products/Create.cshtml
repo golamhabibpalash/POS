@@ -6,7 +6,7 @@
 }
 <div class="row">
     <div class="col-md-12 text-center">
-        <span class="text-info h3">Create New Product Item</span><hr />
+        <span class="text-info h3">Create New Product Item <button class="btn btn-sm"><i class="fa fa-refresh text-info"></i></button> </span><hr />
     </div>
 </div>
 <div class="row pb-3">
@@ -49,11 +49,23 @@
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label asp-for="ProductTypeId" class="control-label col-form-label col-md-3 text-md-right"></label>
+                                <div class="col-md-9">
+                                    <div class="input-group mb-3">
+                                        <select asp-for="ProductTypeId" class="form-control">
+                                            <option>Select</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info btn-sm" type="button" data-target="#productTypeModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-3 border-dark">
-                            
-                                <img src="~/images/product/noimage.png" alt="Alternate Text"  style="width:100%;"/>
-                            
+                            <img src="~/images/product/noimage.png" alt="Alternate Text"  class="img-fluid img-thumbnail rounded mx-auto d-block"/>                            
                         </div>
                     </div>
                 </div>
@@ -61,8 +73,6 @@
             <br />
             <div class="row">
                 <div class="col-md-12">
-
-
                     <div class="form-group row">
                         <label asp-for="CategoryId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
@@ -71,7 +81,7 @@
                                     <option>-Select-</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-info btn-sm" type="button" data-target="#catagoryModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -83,7 +93,7 @@
                                     <option>-Select-</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-info btn-sm" type="button" data-target="#brandModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <span asp-validation-for="BrandId" class="text-danger"></span>
@@ -109,15 +119,15 @@
                         </div>
                         <label asp-for="ProductTypeId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <div class="input-group mb-3">
+                            @*<div class="input-group mb-3">
                                 <select asp-for="ProductTypeId" class="form-control">
                                     <option>Select</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-info btn-sm" type="button"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
-                            <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                            <span asp-validation-for="ProductTypeId" class="text-danger"></span>*@
                         </div>
                     </div>
                     <div class="form-group row">
@@ -140,7 +150,7 @@
                                     <option>Select</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button"><i class="fa fa-plus"></i> </button>
+                                    <button class="btn btn-info btn-sm" type="button" data-target="#productColorModal" data-toggle="modal"><i class="fa fa-plus"></i> </button>
                                 </div>
                             </div>
 
@@ -153,7 +163,7 @@
                                     <option>Select</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-info btn-sm" type="button" data-target="#productSizeModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <span asp-validation-for="ProductSizeId" class="text-danger"></span>
@@ -182,8 +192,6 @@
                     </label>
                 </div>
             </div>
-
-           
             <div class="form-group row">
                 <div class="col-md-4 offset-md-4 text-md-center">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -197,8 +205,123 @@
     
 </div>
 
+@*Code for Modal*@ 
+<div class="row">
+    <!-- Button trigger modal -->
+    
 
+    <!-- Modal for Category-->
+    <div class="modal fade" id="catagoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Category Modal Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for Brand*@
+    <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Brand Modal Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for Color*@
+    <div class="modal fade" id="productColorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Color Modal Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for Size*@
+    <div class="modal fade" id="productSizeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Size Modal Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for Type*@
+    <div class="modal fade" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal for Product Type Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+        
+
+        });
+    </script>
 }
