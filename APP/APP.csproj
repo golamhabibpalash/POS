@@ -23,6 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Shared\Components\Brands\" />
+    <Folder Include="Views\Shared\Components\Categories\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>
