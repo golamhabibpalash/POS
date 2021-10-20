@@ -7,16 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
+using APP.VIewModels.CategoryVM;
+using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace APP.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly POSDbContext _context;
+        private readonly ICategoryManager _categoryManager;
+        private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CategoriesController(POSDbContext context)
+        public CategoriesController(POSDbContext context, ICategoryManager categoryManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _categoryManager = categoryManager;
+            _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Categories
@@ -148,6 +160,38 @@ namespace APP.Controllers
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CreateByJson(CategoryCreateVM category)
+        {
+            if (ModelState.IsValid)
+            {
+                Category cat = _mapper.Map<Category>(category);
+                if (category.CategoryIcon!=null)
+                {
+                    string root = _webHostEnvironment.WebRootPath;
+                    string folder = "Images/Category/";
+                    string logoName = "category_"+cat.Id+"_"+cat.CategoryName.Trim();
+                    string f = Path.Combine(root, folder, logoName);
+                    using (var stream = new FileStream(f, FileMode.Create))
+                    {
+                        await category.CategoryIcon.CopyToAsync(stream);
+                    }
+                    cat.CategoryIcon = logoName;
+                }
+                bool isSaved = await _categoryManager.AddAsync(cat);
+                var catList = await _categoryManager.GetAllAsync();
+                if (isSaved==true)
+                {
+                    return Json(catList, new { isSaved = true });
+                }
+                else
+                {
+                    return Json(new { isSaved = false});
+                }
+            }
+            return Json("");
         }
     }
 }

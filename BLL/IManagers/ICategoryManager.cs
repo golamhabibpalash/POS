@@ -9,5 +9,6 @@ namespace BLL.IManagers
 {
     public interface ICategoryManager : IManager<Category>
     {
+        
     }
 }

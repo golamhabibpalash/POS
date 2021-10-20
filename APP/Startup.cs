@@ -1,3 +1,7 @@
+using BLL.IManagers;
+using BLL.Managers;
+using DAL.IRepositories;
+using DAL.Repositories;
 using DB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -49,6 +53,8 @@ namespace APP
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<POSDbContext>();
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddControllersWithViews();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -58,8 +64,14 @@ namespace APP
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
-            //Code for Live Reload
-            //services.AddLiveReload();
+
+            
+
+            services.AddTransient<ICategoryManager, CategoryManager>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+
+            services.AddTransient<IBrandManager, BrandManager>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
 
         }
 

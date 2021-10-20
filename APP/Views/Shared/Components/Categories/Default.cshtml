@@ -1,0 +1,35 @@
+﻿@model APP.VIewModels.CategoryVM.CategoryCreateVM
+
+@*<form id="CategoryCreateForm" asp-action="AddCategoryPartial" asp-controller="Categories" method="post">*@
+<form id="CategoryCreateForm">
+    <div class="row mb-3">
+        <label asp-for="ParentCategory" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="ParentCategory" class="form-control" asp-items="@ViewBag.CategoryList">
+                <option selected disabled>-Select Category-</option>
+                <option value="0">Root Category</option>
+            </select>
+            <span asp-validation-for="ParentCategory" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="CategoryName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="CategoryName" class="form-control">
+        </div>
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="CategoryIcon" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="CategoryIcon" class="form-control">
+        </div>
+        <span asp-validation-for="CategoryIcon" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary" id="categorySubmitButton">Add</button>
+            <button type="button" class="btn btn-secondary cancelButton" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</form>

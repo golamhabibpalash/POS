@@ -51,11 +51,11 @@ namespace APP.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "Id");
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "Id");
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id");
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName");
+            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName");
+            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName");
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName");
             return View();
         }
 
@@ -72,11 +72,11 @@ namespace APP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "Id", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "Id", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 
@@ -93,11 +93,11 @@ namespace APP.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "Id", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "Id", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 
@@ -133,11 +133,11 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "Id", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "Id", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 

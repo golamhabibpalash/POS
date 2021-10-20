@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.11" />
@@ -23,13 +25,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Components\Brands\" />
-    <Folder Include="Views\Shared\Components\Categories\" />
+    <Folder Include="VIewModels\BrandVM\" />
+    <Folder Include="VIewModels\Product.VM\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\DB\DB.csproj" />
     <ProjectReference Include="..\MODELS\MODELS.csproj" />
   </ItemGroup>

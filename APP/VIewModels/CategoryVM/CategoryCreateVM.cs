@@ -1,26 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MODELS
+namespace APP.VIewModels.CategoryVM
 {
-    public class Category : CommonProps
+    public class CategoryCreateVM
     {
         [Display(Name = "Name")]
         public string CategoryName { get; set; }
 
         [Display(Name = "Icon")]
-        public string CategoryIcon { get; set; }
+        public IFormFile CategoryIcon { get; set; }
 
         [Display(Name = "Category")]
-        [ForeignKey("Category")]
         public int ParentCategory { get; set; }
-
-        public List<Product> Products { get; set; }
-        public List<Brand> Brands { get; set; }
     }
 }
