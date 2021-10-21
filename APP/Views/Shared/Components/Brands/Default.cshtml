@@ -6,8 +6,7 @@
                     <label asp-for="CategoryId" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
                         <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryList">
-                            <option selected disabled >-Select Category-</option>
-                            <option value="" >None Brand</option>
+                            <option selected disabled >-Select Category-</option>                            
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>

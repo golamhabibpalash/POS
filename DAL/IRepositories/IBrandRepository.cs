@@ -9,5 +9,6 @@ namespace DAL.IRepositories
 {
     public interface IBrandRepository : IRepository<Brand>
     {
+        Task<Brand> GetByNameAsync(string brandName);
     }
 }

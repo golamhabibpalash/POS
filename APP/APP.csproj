@@ -25,9 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="VIewModels\BrandVM\" />
     <Folder Include="VIewModels\Product.VM\" />
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\Brand\" />
     <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>
 

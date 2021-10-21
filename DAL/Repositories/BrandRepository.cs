@@ -24,5 +24,10 @@ namespace DAL.Repositories
         {
             return await _context.Brands.Include(b => b.Category).FirstOrDefaultAsync(n => n.Id == id);
         }
+
+        public async Task<Brand> GetByNameAsync(string brandName)
+        {
+            return await _context.Brands.FirstOrDefaultAsync(b => b.BrandName == brandName);
+        }
     }
 }

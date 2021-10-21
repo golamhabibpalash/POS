@@ -9,5 +9,6 @@ namespace BLL.IManagers
 {
     public interface IBrandManager : IManager<Brand>
     {
+        Task<Brand> GetByNameAsync(string brandName);
     }
 }

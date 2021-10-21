@@ -10,6 +10,9 @@ using MODELS;
 using BLL.IManagers;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using APP.VIewModels.BrandVM;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
@@ -63,15 +66,30 @@ namespace APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BrandName,Logo,CategoryId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Brand brand)
+        public async Task<IActionResult> Create([Bind("BrandName,Logo,CategoryId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] BrandCreateVM brandVM)
         {
             if (ModelState.IsValid)
             {
+                Brand brand = _mapper.Map<Brand>(brandVM);
+
+                if (brandVM.Logo!=null)
+                {
+                    string logoName = "brand_"+Guid.NewGuid()+brandVM.BrandName+Path.GetExtension(brandVM.Logo.FileName);
+                    var f = Path.Combine(_webHostEnvironment.WebRootPath,"Images/Brand/", logoName);
+                    using (var stream = new FileStream(f,FileMode.Create))
+                    {
+                        await brandVM.Logo.CopyToAsync(stream);
+                    }
+
+                    brand.Logo = logoName;
+                }
+                brand.CreatedBy = HttpContext.Session.GetString("UserId");
+                brand.CreatedAt = DateTime.Now; 
                 await _brandManager.AddAsync(brand);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", brand.CategoryId);
-            return View(brand);
+            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", brandVM.CategoryId);
+            return View(brandVM);
         }
 
         // GET: Brands/Edit/5
@@ -158,6 +176,30 @@ namespace APP.Controllers
             await _brandManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        public async Task<JsonResult> AddWithJson(BrandCreateVM brandVM)
+        {
+            if (ModelState.IsValid)
+            {
+                Brand brand = _mapper.Map<Brand>(brandVM);
 
+                if (brandVM.Logo != null)
+                {
+                    string logoName = "brand_" + Guid.NewGuid() + brandVM.BrandName + Path.GetExtension(brandVM.Logo.FileName);
+                    var f = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Brand/", logoName);
+                    using (var stream = new FileStream(f, FileMode.Create))
+                    {
+                        await brandVM.Logo.CopyToAsync(stream);
+                    }
+
+                    brand.Logo = logoName;
+                }
+                brand.CreatedAt = DateTime.Now;
+                brand.CreatedBy = HttpContext.Session.GetString("UserId");
+                await _brandManager.AddAsync(brand);
+                return Json("");
+            }
+            
+            return Json("");
+        }
     }
 }

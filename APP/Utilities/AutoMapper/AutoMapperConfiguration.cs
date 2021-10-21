@@ -1,4 +1,5 @@
-﻿using APP.VIewModels.CategoryVM;
+﻿using APP.VIewModels.BrandVM;
+using APP.VIewModels.CategoryVM;
 using AutoMapper;
 using MODELS;
 using System;
@@ -14,6 +15,9 @@ namespace APP.Utilities.AutoMapper
         {
             CreateMap<Category, CategoryCreateVM>();
             CreateMap<CategoryCreateVM, Category>();
+
+            CreateMap<Brand, BrandCreateVM>();
+            CreateMap<BrandCreateVM, Brand>();
         }
     }
 }

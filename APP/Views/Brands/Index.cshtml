@@ -3,64 +3,41 @@
 @{
     ViewData["Title"] = "Brand";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int sl = 0;
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<h4>List of Brands</h4><hr />
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BrandName)
-            </th>
+            <th>#</th>
             <th>
                 @Html.DisplayNameFor(model => model.Logo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.BrandName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </th>
-            <th></th>
+
+            <th><a asp-action="Create">Create New</a></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>@(++sl)</td>
+            <td class="px-0" width="100">
+                <img src="~/images/Brand/@item.Logo" class="img-fluid" alt="Logo" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Logo)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
