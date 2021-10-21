@@ -221,7 +221,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @await Component.InvokeAsync("Categories");
+                    <form id="CategoryCreateForm" method="post" enctype="multipart/form-data">
+                        @await Component.InvokeAsync("Categories");
+                    </form>
                 </div>
                 @*<div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -242,7 +244,9 @@
                     </button>
                 </div>
                 <div class="modal-body p-3">
-                    @await Component.InvokeAsync("Brands");                    
+                    <form id="BrandCreateForm"  method="post" enctype="multipart/form-data">
+                        @await Component.InvokeAsync("Brands");
+                    </form>                  
                 </div>
                 <div class="modal-footer text-danger" id="categoryFooter" style="display:none">
                     
@@ -318,8 +322,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-const { each } = require("jquery");
-
         $(document).ready(function () {
             $('#CategoryCreateForm').submit(function (e) {
                 e.preventDefault();
@@ -332,20 +334,21 @@ const { each } = require("jquery");
                     data: fdata,
                     processData: false,
                     contentType: false,
-                    success: function (result) {
-                        if (result.isSaved==true) {
-                            $('.cancelButton').click();
+                    success: function (data) {
+                        $('.cancelButton').click();
+                        //if (data.isSaved==true) {
+                            
 
-                            $('#ParentCategory').empty();
-                            $(result.catList).each(function (i, object) {
-                                var op = '<option value="' + object.Id + '">' + object.categoryName + '</option>';
-                                $('#ParentCategory').append(op);
-                            });
-                        }
-                        else {
-                            $('#categoryFooter').show();
-                            $('#categoryFooter').append('<p >This Category is Already Exist</p>');
-                        }
+                        //    //$('#CategoryId').empty();
+                        //    //$.each(data, function (i, obj) {
+                        //    //    var o = '<option value="' + obj.id + '">' + obj.categoryName + "</option>";
+                        //    //    $("#CategoryId").append(o).change();
+                        //    //});
+                        //}
+                        //else {
+                        //    $('#categoryFooter').show();
+                        //    $('#categoryFooter').append('<p >This Category is Already Exist</p>');
+                        //}
                     },
                     error: function (err) {
 

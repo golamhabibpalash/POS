@@ -1,5 +1,6 @@
 ﻿using DAL.IRepositories;
 using DB;
+using Microsoft.EntityFrameworkCore;
 using MODELS;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ namespace DAL.Repositories
         public CategoryRepository(POSDbContext context):base(context)
         {
 
+        }
+        public override async Task<List<Category>> GetAllAsync()
+        {
+            return await _context.Categories.Include(c => c.Parent).ToListAsync();
         }
     }
 }

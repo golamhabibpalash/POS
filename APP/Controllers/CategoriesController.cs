@@ -63,12 +63,37 @@ namespace APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryName,CategoryIcon,ParentCategory,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Category category)
+        public async Task<IActionResult> Create( CategoryCreateVM category)
         {
             if (ModelState.IsValid)
             {
-                await _categoryManager.AddAsync(category);
-                return RedirectToAction(nameof(Index));
+                Category cat = _mapper.Map<Category>(category);
+                if (category.CategoryIcon != null)
+                {
+                    string root = _webHostEnvironment.WebRootPath;
+                    string folder = "Images/Category/";
+                    string logoName = "category_" + Guid.NewGuid() + "_" + cat.CategoryName.Trim() + Path.GetExtension(category.CategoryIcon.FileName);
+                    string f = Path.Combine(root, folder, logoName);
+                    using (var stream = new FileStream(f, FileMode.Create))
+                    {
+                        await category.CategoryIcon.CopyToAsync(stream);
+                    }
+                    cat.CategoryIcon = logoName;
+                }
+                cat.CreatedAt = DateTime.Now;
+                cat.CreatedBy = HttpContext.Session.GetString("UserId");
+
+                bool isSaved = await _categoryManager.AddAsync(cat);
+                if (isSaved == true)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.msg = category.CategoryName + " is already exist";
+                    return View(category);
+                }
+                
             }
             return View(category);
         }
@@ -167,7 +192,7 @@ namespace APP.Controllers
                 {
                     string root = _webHostEnvironment.WebRootPath;
                     string folder = "Images/Category/";
-                    string logoName = "category_"+cat.Id+"_"+cat.CategoryName.Trim();
+                    string logoName = "category_"+Guid.NewGuid()+"_"+cat.CategoryName.Trim()+Path.GetExtension(category.CategoryIcon.FileName);
                     string f = Path.Combine(root, folder, logoName);
                     using (var stream = new FileStream(f, FileMode.Create))
                     {
@@ -175,6 +200,9 @@ namespace APP.Controllers
                     }
                     cat.CategoryIcon = logoName;
                 }
+                cat.CreatedAt = DateTime.Now;
+                cat.CreatedBy = HttpContext.Session.GetString("UserId");
+
                 bool isSaved = await _categoryManager.AddAsync(cat);
                 var catList = await _categoryManager.GetAllAsync();
                 if (isSaved==true)

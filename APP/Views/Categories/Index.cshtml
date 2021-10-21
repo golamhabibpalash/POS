@@ -3,64 +3,53 @@
 @{
     ViewData["Title"] = "Category";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int sl = 0;
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-responsive table-hover table-striped">
     <thead>
         <tr>
+            <th>#</th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.CategoryIcon)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryIcon)
+                @Html.DisplayNameFor(model => model.CategoryId)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParentCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </th>
-            <th></th>
+
+            <th><a asp-action="Create" class="btn btn-info btn-sm">Create New</a></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr >
+            <td>@(++sl)</td>
+            
+            <td>
+                <img src="~/images/Category/@item.CategoryIcon" alt="Icon" class="img-circle img-fluid img-thumbnail" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryIcon)
+                @if (item.CategoryId != null && item.CategoryId != 0)
+                {
+                    @Html.DisplayFor(modelItem => item.Parent.CategoryName)
+                }
+                else if (item.CategoryId == 0)
+                {
+                    <span>Root</span>
+                }
+                else
+                {
+                    <span>Root</span>
+                }
+
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParentCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

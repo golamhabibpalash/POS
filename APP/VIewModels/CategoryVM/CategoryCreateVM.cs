@@ -16,6 +16,6 @@ namespace APP.VIewModels.CategoryVM
         public IFormFile CategoryIcon { get; set; }
 
         [Display(Name = "Category")]
-        public int ParentCategory { get; set; }
+        public int CategoryId { get; set; }
     }
 }

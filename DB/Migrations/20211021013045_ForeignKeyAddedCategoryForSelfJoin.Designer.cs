@@ -4,14 +4,16 @@ using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DB.Migrations
 {
     [DbContext(typeof(POSDbContext))]
-    partial class POSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211021013045_ForeignKeyAddedCategoryForSelfJoin")]
+    partial class ForeignKeyAddedCategoryForSelfJoin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,6 +79,9 @@ namespace DB.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -85,7 +90,7 @@ namespace DB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
@@ -691,8 +696,8 @@ namespace DB.Migrations
             modelBuilder.Entity("MODELS.Category", b =>
                 {
                     b.HasOne("MODELS.Category", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("CategoryId");
+                        .WithMany()
+                        .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
                 });
@@ -854,8 +859,6 @@ namespace DB.Migrations
             modelBuilder.Entity("MODELS.Category", b =>
                 {
                     b.Navigation("Brands");
-
-                    b.Navigation("Children");
 
                     b.Navigation("Products");
                 });

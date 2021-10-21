@@ -10,16 +10,17 @@ namespace MODELS
 {
     public class Category : CommonProps
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Name"), Required]
         public string CategoryName { get; set; }
 
         [Display(Name = "Icon")]
         public string CategoryIcon { get; set; }
 
         [Display(Name = "Category")]
-        [ForeignKey("Category")]
-        public int ParentCategory { get; set; }
+        public int? CategoryId { get; set; }
+        public Category Parent { get; set; }
 
+        public virtual ICollection<Category> Children { get; set; }
         public List<Product> Products { get; set; }
         public List<Brand> Brands { get; set; }
     }
