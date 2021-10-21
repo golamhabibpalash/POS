@@ -7,23 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
+using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 
 namespace APP.Controllers
 {
     public class BrandsController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly IBrandManager _brandManager;
+        private readonly ICategoryManager _categoryManager;
+        private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BrandsController(POSDbContext context)
+        public BrandsController(IBrandManager brandManager, ICategoryManager categoryManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context;
+            _brandManager = brandManager;
+            _categoryManager = categoryManager;
+            _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Brands
         public async Task<IActionResult> Index()
         {
-            var pOSDbContext = _context.Brands.Include(b => b.Category);
-            return View(await pOSDbContext.ToListAsync());
+            return View(await _brandManager.GetAllAsync());
         }
 
         // GET: Brands/Details/5
@@ -34,9 +42,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var brand = await _brandManager.GetByIdAsync((int)id);
             if (brand == null)
             {
                 return NotFound();
@@ -46,9 +52,9 @@ namespace APP.Controllers
         }
 
         // GET: Brands/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName");
             return View();
         }
 
@@ -61,11 +67,10 @@ namespace APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(brand);
-                await _context.SaveChangesAsync();
+                await _brandManager.AddAsync(brand);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", brand.CategoryId);
+            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", brand.CategoryId);
             return View(brand);
         }
 
@@ -77,12 +82,12 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands.FindAsync(id);
+            var brand = await _brandManager.GetByIdAsync((int)id);
             if (brand == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", brand.CategoryId);
+            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", brand.CategoryId);
             return View(brand);
         }
 
@@ -102,12 +107,17 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(brand);
-                    await _context.SaveChangesAsync();
+                    await _brandManager.UpdateAsync(brand);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BrandExists(brand.Id))
+                    bool BrandExists=false;
+                    Brand br = await _brandManager.GetByIdAsync(id);
+                    if (br!=null)
+                    {
+                        BrandExists = true;
+                    }
+                    if (BrandExists==false)
                     {
                         return NotFound();
                     }
@@ -118,7 +128,7 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", brand.CategoryId);
+            ViewData["CategoryId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", brand.CategoryId);
             return View(brand);
         }
 
@@ -130,9 +140,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var brand = await _brandManager.GetByIdAsync((int)id);
             if (brand == null)
             {
                 return NotFound();
@@ -146,15 +154,10 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
-            await _context.SaveChangesAsync();
+
+            await _brandManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BrandExists(int id)
-        {
-            return _context.Brands.Any(e => e.Id == id);
-        }
     }
 }
