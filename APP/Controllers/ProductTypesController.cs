@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
     public class ProductTypesController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly IProductTypeManager _productTypeManager;
 
-        public ProductTypesController(POSDbContext context)
+        public ProductTypesController(IProductTypeManager productTypeManager)
         {
-            _context = context;
+            _productTypeManager = productTypeManager;
         }
 
         // GET: ProductTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductTypes.ToListAsync());
+            return View(await _productTypeManager.GetAllAsync());
         }
 
         // GET: ProductTypes/Details/5
@@ -33,8 +35,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productType = await _productTypeManager.GetByIdAsync((int)id);
             if (productType == null)
             {
                 return NotFound();
@@ -49,17 +50,17 @@ namespace APP.Controllers
             return View();
         }
 
-        // POST: ProductTypes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TypeName,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductType productType)
+        public async Task<IActionResult> Create([Bind("TypeName,Id,Description")] ProductType productType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productType);
-                await _context.SaveChangesAsync();
+                productType.CreatedAt = DateTime.Now;
+                productType.CreatedBy = HttpContext.Session.GetString("UserId");
+
+                await _productTypeManager.AddAsync(productType);
                 return RedirectToAction(nameof(Index));
             }
             return View(productType);
@@ -73,7 +74,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes.FindAsync(id);
+            var productType = await _productTypeManager.GetByIdAsync((int)id);
             if (productType == null)
             {
                 return NotFound();
@@ -81,12 +82,10 @@ namespace APP.Controllers
             return View(productType);
         }
 
-        // POST: ProductTypes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TypeName,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductType productType)
+        public async Task<IActionResult> Edit(int id, [Bind("TypeName,Description,Id")] ProductType productType)
         {
             if (id != productType.Id)
             {
@@ -97,12 +96,19 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(productType);
-                    await _context.SaveChangesAsync();
+                    productType.UpdatedAt = DateTime.Now;
+                    productType.UpdatedBy = HttpContext.Session.GetString("UserId");
+
+                    bool isUpdated = await _productTypeManager.UpdateAsync(productType);
+                    if (isUpdated == false)
+                    {
+                        return View();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductTypeExists(productType.Id))
+                    ProductType productType1 = await _productTypeManager.GetByIdAsync(id);
+                    if (productType1==null)
                     {
                         return NotFound();
                     }
@@ -124,8 +130,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productType = await _productTypeManager.GetByIdAsync((int)id);
             if (productType == null)
             {
                 return NotFound();
@@ -139,15 +144,20 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productType = await _context.ProductTypes.FindAsync(id);
-            _context.ProductTypes.Remove(productType);
-            await _context.SaveChangesAsync();
+            await _productTypeManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductTypeExists(int id)
+        public async Task<JsonResult> CreateByJson(ProductType productType)
         {
-            return _context.ProductTypes.Any(e => e.Id == id);
+            if (ModelState.IsValid)
+            {
+                productType.CreatedAt = DateTime.Now;
+                productType.CreatedBy = HttpContext.Session.GetString("UserId");
+                await _productTypeManager.AddAsync(productType);
+            }
+            return Json("");
         }
+
     }
 }

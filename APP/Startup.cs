@@ -73,6 +73,9 @@ namespace APP
             services.AddTransient<IBrandManager, BrandManager>();
             services.AddTransient<IBrandRepository, BrandRepository>();
 
+            services.AddTransient<IProductTypeManager, ProductTypeManager>();
+            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

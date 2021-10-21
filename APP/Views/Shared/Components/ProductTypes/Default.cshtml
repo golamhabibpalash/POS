@@ -1,0 +1,25 @@
+﻿@model MODELS.ProductType
+
+
+<div class="row mb-3">
+    <label asp-for="TypeName" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <input asp-for="TypeName" class="form-control">
+    </div>
+    <span asp-validation-for="TypeName" class="text-danger"></span>
+</div>
+
+<div class="row mb-3">
+    <label asp-for="Description" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+    </div>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-md-right text-center">
+        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-secondary cancelButton" data-dismiss="modal">Close</button>
+    </div>
+</div>

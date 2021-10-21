@@ -53,7 +53,7 @@
                                 <label asp-for="ProductTypeId" class="control-label col-form-label col-md-3 text-md-right"></label>
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <select asp-for="ProductTypeId" class="form-control">
+                                        <select asp-for="ProductTypeId" class="form-control" asp-items="@ViewBag.ProductTypeId">
                                             <option>Select</option>
                                         </select>
                                         <div class="input-group-append">
@@ -301,18 +301,19 @@
     <div class="modal fade" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal for Product Type Area</h5>
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Product Type</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form id="ProductTypeCreateForm" method="post">
+                        @await Component.InvokeAsync("ProductTypes");
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer" style="display:none">
+                    
                 </div>
             </div>
         </div>
@@ -323,6 +324,27 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(document).ready(function () {
+            $('#ProductTypeCreateForm').submit(function (e) {
+                e.preventDefault();
+                var fdata = new FormData(this);
+                var url = "/ProductTypes/CreateByJson";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $('.modal').modal().hide();
+                    },
+                    error: function (err) {
+
+                    }
+                });
+            });
+
             $('#BrandCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);

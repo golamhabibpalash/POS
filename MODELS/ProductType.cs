@@ -10,8 +10,7 @@ namespace MODELS
     public class ProductType : CommonProps
     {
         [Display(Name = "Type Name"), Required]
-        public string TypeName { get; set; }
-
+        public string TypeName { get; set; } //Example: Inventory Items, Non-Inventory Items, Gift Cards, Tickets etc.
         public string Description { get; set; }
     }
 }
