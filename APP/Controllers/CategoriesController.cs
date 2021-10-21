@@ -18,14 +18,12 @@ namespace APP.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly POSDbContext _context;
         private readonly ICategoryManager _categoryManager;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CategoriesController(POSDbContext context, ICategoryManager categoryManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public CategoriesController(ICategoryManager categoryManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context;
             _categoryManager = categoryManager;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
@@ -34,7 +32,7 @@ namespace APP.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _categoryManager.GetAllAsync());
         }
 
         // GET: Categories/Details/5
@@ -45,8 +43,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryManager.GetByIdAsync((int)id);
             if (category == null)
             {
                 return NotFound();
@@ -70,8 +67,7 @@ namespace APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await _categoryManager.AddAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -85,7 +81,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryManager.GetByIdAsync((int)id);
             if (category == null)
             {
                 return NotFound();
@@ -109,8 +105,7 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await _categoryManager.UpdateAsync(category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,8 +131,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryManager.GetByIdAsync((int)id);
             if (category == null)
             {
                 return NotFound();
@@ -151,15 +145,16 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+
+            await _categoryManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            var cat = _categoryManager.GetByIdAsync(id);
+            return cat != null? false:true;
+
         }
 
         [HttpPost]
