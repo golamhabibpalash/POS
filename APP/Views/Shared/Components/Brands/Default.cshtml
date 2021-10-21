@@ -3,7 +3,7 @@
     <div class="">
         <form id="BrandCreateForm" asp-action="Create" asp-controller="Brands" method="post" enctype="multipart/form-data">
                 <div class="row mb-3">
-                    <label asp-for="CategoryId" class="col-sm-2 col-form-label"></label>
+                    <label asp-for="CategoryId" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
                         <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryList">
                             <option selected disabled >-Select Category-</option>                            
@@ -12,14 +12,14 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label asp-for="BrandName" class="col-sm-2 col-form-label"></label>
+                    <label asp-for="BrandName" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
                         <input asp-for="BrandName" class="form-control">
                     </div>
                     <span asp-validation-for="BrandName" class="text-danger"></span>
                 </div>
                 <div class="row mb-3">
-                    <label asp-for="Logo" class="col-sm-2 col-form-label"></label>
+                    <label asp-for="Logo" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
                         <input name="logo" type="file" class="">
                     </div>
@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary cancelButton" data-dismiss="modal">Close</button>
                     </div>
                 </div>
         </form>

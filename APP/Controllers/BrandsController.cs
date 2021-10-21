@@ -176,7 +176,7 @@ namespace APP.Controllers
             await _brandManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        public async Task<JsonResult> AddWithJson(BrandCreateVM brandVM)
+        public async Task<JsonResult> CreateByJson(BrandCreateVM brandVM)
         {
             if (ModelState.IsValid)
             {
@@ -197,8 +197,7 @@ namespace APP.Controllers
                 brand.CreatedBy = HttpContext.Session.GetString("UserId");
                 await _brandManager.AddAsync(brand);
                 return Json("");
-            }
-            
+            }            
             return Json("");
         }
     }

@@ -248,7 +248,7 @@
                         @await Component.InvokeAsync("Brands");
                     </form>                  
                 </div>
-                <div class="modal-footer text-danger" id="categoryFooter" style="display:none">
+                <div class="modal-footer text-danger" id="BrandFooter" style="display:none">
                     
                 </div>
             </div>
@@ -323,32 +323,42 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(document).ready(function () {
-            $('#CategoryCreateForm').submit(function (e) {
+            $('#BrandCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
-                
+                var url = "/Brands/CreateByJson";
+
                 $.ajax({
-                    url: "/Categories/CreateByJson",
+                    url: url,
                     type: "POST",
                     dataType: 'json',
                     data: fdata,
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $('.cancelButton').click();
-                        //if (data.isSaved==true) {
-                            
+                        $(this).hide();
+                    },
+                    error: function (err) {
 
-                        //    //$('#CategoryId').empty();
-                        //    //$.each(data, function (i, obj) {
-                        //    //    var o = '<option value="' + obj.id + '">' + obj.categoryName + "</option>";
-                        //    //    $("#CategoryId").append(o).change();
-                        //    //});
-                        //}
-                        //else {
-                        //    $('#categoryFooter').show();
-                        //    $('#categoryFooter').append('<p >This Category is Already Exist</p>');
-                        //}
+                    }
+                });
+            });
+
+
+            $('#CategoryCreateForm').submit(function (e) {
+                e.preventDefault();
+                var fdata = new FormData(this);
+                var url = "/Categories/CreateByJson";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $(this).hide();
                     },
                     error: function (err) {
 
