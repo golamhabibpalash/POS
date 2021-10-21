@@ -4,14 +4,16 @@ using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DB.Migrations
 {
     [DbContext(typeof(POSDbContext))]
-    partial class POSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211021132858_descriptionAddedInProductTypeModel")]
+    partial class descriptionAddedInProductTypeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,14 +183,14 @@ namespace DB.Migrations
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<int>("UnitOfMeasureId")
-                        .HasColumnType("int");
-
                     b.Property<double>("UnitPurchasePrice")
                         .HasColumnType("float");
 
                     b.Property<double>("UnitSellingPrice")
                         .HasColumnType("float");
+
+                    b.Property<string>("UoM")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -207,8 +209,6 @@ namespace DB.Migrations
                     b.HasIndex("ProductSizeId");
 
                     b.HasIndex("ProductTypeId");
-
-                    b.HasIndex("UnitOfMeasureId");
 
                     b.ToTable("Products");
                 });
@@ -490,36 +490,6 @@ namespace DB.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("MODELS.UnitOfMeasure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UnitOfMeasure");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -766,12 +736,6 @@ namespace DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MODELS.UnitOfMeasure", "UnitOfMeasure")
-                        .WithMany()
-                        .HasForeignKey("UnitOfMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
@@ -781,8 +745,6 @@ namespace DB.Migrations
                     b.Navigation("ProductSize");
 
                     b.Navigation("ProductType");
-
-                    b.Navigation("UnitOfMeasure");
                 });
 
             modelBuilder.Entity("MODELS.Purchase", b =>

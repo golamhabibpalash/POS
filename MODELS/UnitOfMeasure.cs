@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace MODELS
 {
-    public class ProductType : CommonProps
+    public class UnitOfMeasure : CommonProps
     {
-        [Display(Name = "Type Name"), Required]
-        public string TypeName { get; set; }
-
+        [Display(Name ="Measurement Unit")]
+        public string UnitName { get; set; }
         public string Description { get; set; }
     }
 }

@@ -14,14 +14,16 @@ namespace MODELS
         public string Image { get; set; }
         public string BarCode { get; set; }
 
-        //[Display(Name = "Quantity")]
-        //public int Qty { get; set; }
+        [Display(Name = "Quantity")]
+        public int Qty { get; set; }
 
         [Display(Name = "Alart Qty")]
         public int AlertQty { get; set; }
 
         [Display(Name = "Measure Unit")]
-        public string UoM { get; set; }
+        public int UnitOfMeasureId { get; set; }
+
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
         [Display(Name = "Manufacturing Date")]
         public DateTime ManufacturingDate { get; set; }
