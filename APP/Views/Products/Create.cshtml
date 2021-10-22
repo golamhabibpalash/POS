@@ -149,12 +149,12 @@
                     <div class="form-group row">
                         <label asp-for="ManufacturingDate" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="ManufacturingDate" class="form-control" />
+                            <input asp-for="ManufacturingDate" type="date" class="form-control" />
                             <span asp-validation-for="ManufacturingDate" class="text-danger"></span>
                         </div>
                         <label asp-for="ExpiryDate" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="ExpiryDate" class="form-control" />
+                            <input asp-for="ExpiryDate" type="date" class="form-control" />
                             <span asp-validation-for="ExpiryDate" class="text-danger"></span>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
             </div>
             
 
-            <div class="form-group for form-check">
+            <div class="form-group pt-3 for form-check">
                 <div class="col-md-10 offset-md-2">
                     <label class="form-check-label">
                         <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
