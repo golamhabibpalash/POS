@@ -4,12 +4,12 @@
     ViewData["Title"] = "New Product Add";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
+<div class="row bg-myColor p-2">
     <div class="col-md-12 text-center">
-        <span class="text-info h3">Create New Product Item <button class="btn btn-sm"><i class="fa fa-refresh text-info"></i></button> </span><hr />
+        <span class=" h3">Create New Product Item <button class="btn btn-sm" id="pageRefresh"><i class="fa fa-refresh text-info"></i></button> </span><hr />
     </div>
 </div>
-<div class="row pb-3">
+<div class="row pb-3 bg-myColor">
     <div class="col-md-12">
         <form asp-action="Create" asp-controller="Products" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -25,10 +25,10 @@
                                 </div>
                             </div>
                             <div class="input-group mb-3 offset-md-2 col-md-10">
-                                <div class="input-group-prepend">
+                                <div class="input-group-prepend mr-3 m-sm-0">
                                     <span class="input-group-text">Image</span>
                                 </div>
-                                <div class="custom-file">
+                                <div class="custom-file row">
                                     <input asp-for="Image" type="file" class="custom-file-input" accept="image/png, image/jpg, image/jpeg">
                                     <label class="custom-file-label" for="Image">Choose file</label>
                                     <span asp-validation-for="Image" class="text-danger"></span>
@@ -45,14 +45,14 @@
                             <div class="form-group row">
                                 <label asp-for="Description" class="control-label col-form-label col-md-3 text-md-right"></label>
                                 <div class="col-md-9">
-                                    <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label asp-for="ProductTypeId" class="control-label col-form-label col-md-3 text-md-right"></label>
                                 <div class="col-md-9">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <select asp-for="ProductTypeId" class="form-control" asp-items="@ViewBag.ProductTypeId">
                                             <option>Select</option>
                                         </select>
@@ -64,8 +64,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 border-dark">
-                            <img src="~/images/product/noimage.png" alt="Alternate Text"  class="img-fluid img-thumbnail rounded mx-auto d-block"/>                            
+                        <div class="col-md-3">
+                            <img src="~/images/product/noimage.png" alt="Alternate Text"  class="" />                            
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <div class="form-group row">
                         <label asp-for="CategoryId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryId">
                                     <option>-Select-</option>
                                 </select>
@@ -88,7 +88,7 @@
                         </div>
                         <label asp-for="BrandId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <select asp-for="BrandId" class="form-control" asp-items="@ViewBag.BrandId">
                                     <option>-Select-</option>
                                 </select>
@@ -100,52 +100,30 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label asp-for="AlertQty" class="control-label col-form-label col-md-2 text-md-right">Existing Qty</label>
-                        <div class="col-md-4">
-                            <input asp-for="AlertQty" class="form-control" />
-                            <span asp-validation-for="AlertQty" class="text-danger"></span>
-                        </div>
-                        <label asp-for="AlertQty" class="control-label col-form-label col-md-2 text-md-right"></label>
-                        <div class="col-md-4">
-                            <input asp-for="AlertQty" class="form-control" />
-                            <span asp-validation-for="AlertQty" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label asp-for="UnitOfMeasureId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="UnitOfMeasureId" class="form-control" />
-                            <span asp-validation-for="UnitOfMeasureId" class="text-danger"></span>
-                        </div>
-                        <label asp-for="ProductTypeId" class="control-label col-form-label col-md-2 text-md-right"></label>
-                        <div class="col-md-4">
-                            @*<div class="input-group mb-3">
-                                <select asp-for="ProductTypeId" class="form-control">
-                                    <option>Select</option>
+                            <div class="input-group">
+                                <select class="form-control" asp-for="UnitOfMeasureId" asp-items="@ViewBag.UnitOfMeasureId">
+                                    <option>-Select-</option>
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-info btn-sm" type="button"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-info btn-sm" type="button" data-target="#unitOfMeasureIdModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
-                            <span asp-validation-for="ProductTypeId" class="text-danger"></span>*@
+                            <span asp-validation-for="UnitOfMeasureId" class="text-danger"></span>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label asp-for="ManufacturingDate" class="control-label col-form-label col-md-2 text-md-right"></label>
+                        <label asp-for="UnitSellingPrice" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="ManufacturingDate" class="form-control" />
-                            <span asp-validation-for="ManufacturingDate" class="text-danger"></span>
-                        </div>
-                        <label asp-for="ExpiryDate" class="control-label col-form-label col-md-2 text-md-right"></label>
-                        <div class="col-md-4">
-                            <input asp-for="ExpiryDate" class="form-control" />
-                            <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                            <div class="input-group">
+                                <input asp-for="UnitSellingPrice" class="form-control" />
+                            </div>
+                            <span asp-validation-for="UnitSellingPrice" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label asp-for="ProductColorId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <select asp-for="ProductColorId" class="form-control">
                                     <option>Select</option>
                                 </select>
@@ -158,7 +136,7 @@
                         </div>
                         <label asp-for="ProductSizeId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <select asp-for="ProductSizeId" class="form-control">
                                     <option>Select</option>
                                 </select>
@@ -169,16 +147,30 @@
                             <span asp-validation-for="ProductSizeId" class="text-danger"></span>
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label asp-for="UnitPurchasePrice" class="control-label col-form-label col-md-2 text-md-right"></label>
+                        <label asp-for="ManufacturingDate" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="UnitPurchasePrice" class="form-control" />
-                            <span asp-validation-for="UnitPurchasePrice" class="text-danger"></span>
+                            <input asp-for="ManufacturingDate" class="form-control" />
+                            <span asp-validation-for="ManufacturingDate" class="text-danger"></span>
                         </div>
-                        <label asp-for="UnitSellingPrice" class="control-label col-form-label col-md-2 text-md-right"></label>
+                        <label asp-for="ExpiryDate" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
-                            <input asp-for="UnitSellingPrice" class="form-control" />
-                            <span asp-validation-for="UnitSellingPrice" class="text-danger"></span>
+                            <input asp-for="ExpiryDate" class="form-control" />
+                            <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="Qty" class="control-label col-form-label col-md-2 text-md-right">Existing Qty</label>
+                        <div class="col-md-4">
+                            <input asp-for="Qty" class="form-control" />
+                            <span asp-validation-for="Qty" class="text-danger"></span>
+                        </div>
+                        <label asp-for="AlertQty" class="control-label col-form-label col-md-2 text-md-right"></label>
+                        <div class="col-md-4">
+                            <input asp-for="AlertQty" class="form-control" />
+                            <span asp-validation-for="AlertQty" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -324,6 +316,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(document).ready(function () {
+            $('#pageRefresh').click(function () {
+                location.reload();
+            });
             $('#ProductTypeCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
