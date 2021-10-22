@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly ICustomerManager _customerManager;
 
-        public CustomersController(POSDbContext context)
+        public CustomersController(ICustomerManager customerManager)
         {
-            _context = context;
+            _customerManager = customerManager;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(await _customerManager.GetAllAsync());
         }
 
         // GET: Customers/Details/5
@@ -33,8 +34,8 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerManager.GetByIdAsync((int)id);
+
             if (customer == null)
             {
                 return NotFound();
@@ -58,8 +59,7 @@ namespace APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _customerManager.AddAsync(customer);
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -73,7 +73,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _customerManager.GetByIdAsync((int)id);
             if (customer == null)
             {
                 return NotFound();
@@ -81,9 +81,7 @@ namespace APP.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerName,PhoneNo,Email,CustomerPhoto,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Customer customer)
@@ -97,12 +95,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    await _customerManager.UpdateAsync(customer);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    bool customerExist = (await _customerManager.GetByIdAsync(customer.Id)!=null);
+
+                    if (!customerExist)
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerManager.GetByIdAsync((int)id);
             if (customer == null)
             {
                 return NotFound();
@@ -139,15 +137,11 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+
+            await _customerManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
-        }
+        
     }
 }
