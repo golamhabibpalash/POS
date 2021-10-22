@@ -12,5 +12,8 @@ namespace MODELS
         [Display(Name = "Type Name"), Required]
         public string TypeName { get; set; } //Example: Inventory Items, Non-Inventory Items, Gift Cards, Tickets etc.
         public string Description { get; set; }
+
+        public ICollection<ProductFeature> ProductFeatures { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
