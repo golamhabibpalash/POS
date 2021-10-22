@@ -3,7 +3,7 @@
 @*<form id="CategoryCreateForm" asp-action="AddCategoryPartial" asp-controller="Categories" method="post">*@
 @*<form id="CategoryCreateForm">*@
     <div class="row mb-3">
-        <label asp-for="CategoryId" class="col-sm-2 col-form-label"></label>
+        <label asp-for="CategoryId" class="col-sm-2 col-form-label text-md-right"></label>
         <div class="col-sm-10">
             <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryList">
                 <option selected disabled>-Select Category-</option>
@@ -13,14 +13,14 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label asp-for="CategoryName" class="col-sm-2 col-form-label"></label>
+        <label asp-for="CategoryName" class="col-sm-2 col-form-label text-md-right"></label>
         <div class="col-sm-10">
             <input asp-for="CategoryName" class="form-control">
         </div>
         <span asp-validation-for="CategoryName" class="text-danger"></span>
     </div>
     <div class="row mb-3">
-        <label asp-for="CategoryIcon" class="col-sm-2 col-form-label"></label>
+        <label asp-for="CategoryIcon" class="col-sm-2 col-form-label text-md-right"></label>
         <div class="col-sm-10">
             <input asp-for="CategoryIcon" class="form-control" accept="image/png, image/jpg, image/jpeg">
         </div>

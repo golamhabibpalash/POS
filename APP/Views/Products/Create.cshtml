@@ -198,7 +198,7 @@
 </div>
 
 @*Code for Modal*@ 
-<div class="row">
+<div class="row text-dark">
     <!-- Button trigger modal -->
     
 
@@ -290,7 +290,7 @@
     </div>
 
     @*Modal for Type*@
-    <div class="modal fade" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade text-dark" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -363,6 +363,48 @@
 
 
             $('#CategoryCreateForm').submit(function (e) {
+                e.preventDefault();
+                var fdata = new FormData(this);
+                var url = "/Categories/CreateByJson";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $(this).hide();
+                    },
+                    error: function (err) {
+
+                    }
+                });
+            });
+
+            $('#ColorCreateForm').submit(function (e) {
+                e.preventDefault();
+                var fdata = new FormData(this);
+                var url = "/Categories/CreateByJson";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $(this).hide();
+                    },
+                    error: function (err) {
+
+                    }
+                });
+            });
+
+            $('#SizeCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
                 var url = "/Categories/CreateByJson";
