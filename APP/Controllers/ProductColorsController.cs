@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class ProductColorsController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly IProductColorManager _productColorManager;
 
-        public ProductColorsController(POSDbContext context)
+        public ProductColorsController(IProductColorManager productColorManager)
         {
-            _context = context;
+            _productColorManager = productColorManager;
         }
 
         // GET: ProductColors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductColors.ToListAsync());
+            return View(await _productColorManager.GetAllAsync());
         }
 
         // GET: ProductColors/Details/5
@@ -33,8 +34,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productColor = await _context.ProductColors
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productColor = await _productColorManager.GetByIdAsync((int)id);
             if (productColor == null)
             {
                 return NotFound();
@@ -49,17 +49,14 @@ namespace APP.Controllers
             return View();
         }
 
-        // POST: ProductColors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ColorName,ColorCode,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductColor productColor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productColor);
-                await _context.SaveChangesAsync();
+                
+                await _productColorManager.AddAsync(productColor);
                 return RedirectToAction(nameof(Index));
             }
             return View(productColor);
@@ -73,7 +70,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productColor = await _context.ProductColors.FindAsync(id);
+            var productColor = await _productColorManager.GetByIdAsync((int)id);
             if (productColor == null)
             {
                 return NotFound();
@@ -81,9 +78,7 @@ namespace APP.Controllers
             return View(productColor);
         }
 
-        // POST: ProductColors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ColorName,ColorCode,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductColor productColor)
@@ -97,12 +92,12 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(productColor);
-                    await _context.SaveChangesAsync();
+                    await _productColorManager.UpdateAsync(productColor);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductColorExists(productColor.Id))
+                    var productExist = await _productColorManager.GetByIdAsync(productColor.Id) != null;
+                    if (!productExist)
                     {
                         return NotFound();
                     }
@@ -124,8 +119,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productColor = await _context.ProductColors
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productColor = await _productColorManager.GetByIdAsync((int)id);
             if (productColor == null)
             {
                 return NotFound();
@@ -139,15 +133,11 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productColor = await _context.ProductColors.FindAsync(id);
-            _context.ProductColors.Remove(productColor);
-            await _context.SaveChangesAsync();
+
+            await _productColorManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductColorExists(int id)
-        {
-            return _context.ProductColors.Any(e => e.Id == id);
-        }
+        
     }
 }
