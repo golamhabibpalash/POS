@@ -76,6 +76,15 @@ namespace APP
             services.AddTransient<IProductTypeManager, ProductTypeManager>();
             services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
 
+            services.AddTransient<IProductManager, ProductManager>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+
+            services.AddTransient<IProductColorManager, ProductColorManager>();
+            services.AddTransient<IProductColorRepository, ProductColorRepository>();
+
+            services.AddTransient<IProductSizeManager, ProductSizeManager>();
+            services.AddTransient<IProductSizeRepository, ProductSizeRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
