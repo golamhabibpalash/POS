@@ -7,22 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly POSDbContext _context;
-        public ProductsController(POSDbContext context)
+        private readonly IProductManager _productManager;
+        private readonly IBrandManager _brandManager;
+        private readonly ICategoryManager _categoryManager;
+        private readonly IProductColorManager _productColorManager;
+        private readonly IProductSizeManager _productSizeManager;
+        private readonly IProductTypeManager _productTypeManager;
+        public ProductsController(IProductManager productManager, IBrandManager brandManager, ICategoryManager categoryManager, IProductColorManager productColorManager, IProductSizeManager productSizeManager, IProductTypeManager productTypeManager)
         {
-            _context = context;
+            _productManager = productManager;
+            _brandManager = brandManager;
+            _categoryManager = categoryManager;
+            _productColorManager = productColorManager;
+            _productSizeManager = productSizeManager;
+            _productTypeManager = productTypeManager;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var pOSDbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category).Include(p => p.ProductColor).Include(p => p.ProductSize).Include(p => p.ProductType);
-            return View(await pOSDbContext.ToListAsync());
+            var prods = await _productManager.GetAllAsync();
+            return View(prods);
         }
 
         // GET: Products/Details/5
@@ -33,13 +44,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .Include(p => p.ProductColor)
-                .Include(p => p.ProductSize)
-                .Include(p => p.ProductType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productManager.GetByIdAsync((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -49,34 +54,31 @@ namespace APP.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName");
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName");
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName");
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName");
+            ViewData["BrandId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName");
+            ViewData["CategoryId"] = new SelectList(await _categoryManager.GetAllAsync(), "Id", "CategoryName");
+            ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName");
+            ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName");
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName");
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductName,Image,BarCode,AlertQty,UoM,ManufacturingDate,ExpiryDate,UnitPurchasePrice,UnitSellingPrice,BrandId,CategoryId,ProductTypeId,IsAvailable,Description,ProductColorId,ProductSizeId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await _productManager.AddAsync(product);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(await _categoryManager.GetAllAsync(), "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 
@@ -88,22 +90,19 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productManager.GetByIdAsync((int)id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(await _categoryManager.GetAllAsync(), "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductName,Image,BarCode,AlertQty,UoM,ManufacturingDate,ExpiryDate,UnitPurchasePrice,UnitSellingPrice,BrandId,CategoryId,ProductTypeId,IsAvailable,Description,ProductColorId,ProductSizeId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Product product)
@@ -117,12 +116,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+
+                    await _productManager.UpdateAsync(product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    bool productExits = await _productManager.GetByIdAsync(product.Id) != null;
+                    if (!productExits)
                     {
                         return NotFound();
                     }
@@ -133,11 +133,11 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["ProductColorId"] = new SelectList(_context.ProductColors, "Id", "ColorName", product.ProductColorId);
-            ViewData["ProductSizeId"] = new SelectList(_context.productSizes, "Id", "SizeName", product.ProductSizeId);
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "TypeName", product.ProductTypeId);
+            ViewData["BrandId"] = new SelectList(await _brandManager.GetAllAsync(), "Id", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(await _categoryManager.GetAllAsync(), "Id", "CategoryName", product.CategoryId);
+            ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
+            ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
             return View(product);
         }
 
@@ -149,13 +149,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .Include(p => p.ProductColor)
-                .Include(p => p.ProductSize)
-                .Include(p => p.ProductType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productManager.GetByIdAsync((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -169,15 +163,11 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+
+            await _productManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        
     }
 }
