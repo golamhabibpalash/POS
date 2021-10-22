@@ -24,11 +24,9 @@
                                     <span asp-validation-for="ProductName" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="input-group mb-3 offset-md-2 col-md-10">
-                                <div class="input-group-prepend mr-3 m-sm-0">
-                                    <span class="input-group-text">Image</span>
-                                </div>
-                                <div class="custom-file row">
+                            <div class="input-group row mb-3">   
+                                <label asp-for="Image" class="control-label col-form-label col-md-3 text-md-right"></label>
+                                <div class="custom-file col-md-9 ml-md-4 row">
                                     <input asp-for="Image" type="file" class="custom-file-input" accept="image/png, image/jpg, image/jpeg">
                                     <label class="custom-file-label" for="Image">Choose file</label>
                                     <span asp-validation-for="Image" class="text-danger"></span>
