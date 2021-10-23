@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MODELS
 {
-    public class ProductSize : CommonProps
+    public class SaleType : CommonProps
     {
-        public string SizeName { get; set; }
-        public string ShortName { get; set; }
+        public string SaleTypeName { get; set; }
+        public string Description { get; set; }
     }
 }

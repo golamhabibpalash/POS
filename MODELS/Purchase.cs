@@ -18,6 +18,7 @@ namespace MODELS
         [Display(Name = "Supplier")]
         public int SupplierId { get; set; }
 
+        public string Remark { get; set; }
         [Display(Name = "Total")]
         public double PurchaseAmount { get; set; }
 

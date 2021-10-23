@@ -18,7 +18,7 @@ namespace MODELS
 
         [Display(Name = "Quantity")]
         public int SaleQty { get; set; }
-
+        public string Remark { get; set; }
         public int CustomerId { get; set; }
 
         public Customer Customer { get; set; }

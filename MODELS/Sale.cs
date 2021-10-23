@@ -11,6 +11,7 @@ namespace MODELS
     {
         [Display(Name = "Code")]
         public string SaleCode { get; set; }
+        public string Remark { get; set; }
 
         [Display(Name = "Date")]
         public DateTime SaleDate { get; set; }
