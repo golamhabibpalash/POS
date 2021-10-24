@@ -207,7 +207,8 @@ namespace APP.Controllers
                 var catList = await _categoryManager.GetAllAsync();
                 if (isSaved==true)
                 {
-                    return Json(catList, new { isSaved = true });
+                    //return Json(catList, new { isSaved = true });
+                    return Json("");
                 }
                 else
                 {
