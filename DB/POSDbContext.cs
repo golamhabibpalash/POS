@@ -27,6 +27,12 @@ namespace DB
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleDetail> SaleDetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<CustomerType> CustomerTypes { get; set; }
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<ProductFeatureDetail> ProductFeatureDetails { get; set; }
+        public DbSet<PurchaseType> PurchaseTypes { get; set; }
+        public DbSet<SaleType> SaleTypes { get; set; }
+        public DbSet<SupplierType> SupplierTypes { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
