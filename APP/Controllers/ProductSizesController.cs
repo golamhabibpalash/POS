@@ -7,22 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class ProductSizesController : Controller
     {
-        private readonly POSDbContext _context;
-
-        public ProductSizesController(POSDbContext context)
+        private readonly IProductSizeManager _productSiseManager;
+        public ProductSizesController(IProductSizeManager productSizeManager)
         {
-            _context = context;
+            _productSiseManager = productSizeManager;
         }
 
         // GET: ProductSizes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.productSizes.ToListAsync());
+            return View(await _productSiseManager.GetAllAsync());
         }
 
         // GET: ProductSizes/Details/5
@@ -33,8 +33,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.productSizes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productSize = await _productSiseManager.GetByIdAsync((int)id);
             if (productSize == null)
             {
                 return NotFound();
@@ -49,17 +48,15 @@ namespace APP.Controllers
             return View();
         }
 
-        // POST: ProductSizes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductSize productSize)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productSize);
-                await _context.SaveChangesAsync();
+
+                await _productSiseManager.AddAsync(productSize);
                 return RedirectToAction(nameof(Index));
             }
             return View(productSize);
@@ -73,7 +70,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.productSizes.FindAsync(id);
+            var productSize = await _productSiseManager.GetByIdAsync((int)id);
             if (productSize == null)
             {
                 return NotFound();
@@ -81,9 +78,7 @@ namespace APP.Controllers
             return View(productSize);
         }
 
-        // POST: ProductSizes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] ProductSize productSize)
@@ -97,12 +92,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(productSize);
-                    await _context.SaveChangesAsync();
+
+                    await _productSiseManager.UpdateAsync(productSize);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductSizeExists(productSize.Id))
+                    bool ProductSizeExists = await _productSiseManager.GetByIdAsync(id)!=null;
+                    if (!ProductSizeExists)
                     {
                         return NotFound();
                     }
@@ -124,8 +120,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.productSizes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productSize = await _productSiseManager.GetByIdAsync((int)id);
             if (productSize == null)
             {
                 return NotFound();
@@ -139,15 +134,11 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productSize = await _context.productSizes.FindAsync(id);
-            _context.productSizes.Remove(productSize);
-            await _context.SaveChangesAsync();
+
+            await _productSiseManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductSizeExists(int id)
-        {
-            return _context.productSizes.Any(e => e.Id == id);
-        }
+        
     }
 }
