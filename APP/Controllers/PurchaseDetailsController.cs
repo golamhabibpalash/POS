@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class PurchaseDetailsController : Controller
     {
-        private readonly POSDbContext _context;
-
-        public PurchaseDetailsController(POSDbContext context)
+        
+        private readonly IPurchaseDetailManager _purchaseDetailManager;
+        private readonly IProductManager _productManager;
+        private readonly IPurchaseManager _purchaseManager;
+        public PurchaseDetailsController(IPurchaseDetailManager purchaseDetailManager, IProductManager productManager, IPurchaseManager purchaseManager)
         {
-            _context = context;
+            _purchaseDetailManager = purchaseDetailManager;
+            _productManager = productManager;
+            _purchaseManager = purchaseManager;
         }
 
         // GET: PurchaseDetails
         public async Task<IActionResult> Index()
         {
-            var pOSDbContext = _context.PurchaseDetails.Include(p => p.Product).Include(p => p.Purchase);
-            return View(await pOSDbContext.ToListAsync());
+            return View(await _purchaseDetailManager.GetAllAsync());
         }
 
         // GET: PurchaseDetails/Details/5
@@ -34,10 +38,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchaseDetail = await _context.PurchaseDetails
-                .Include(p => p.Product)
-                .Include(p => p.Purchase)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var purchaseDetail = await _purchaseDetailManager.GetByIdAsync((int)id);
             if (purchaseDetail == null)
             {
                 return NotFound();
@@ -47,28 +48,25 @@ namespace APP.Controllers
         }
 
         // GET: PurchaseDetails/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
-            ViewData["PurchaseId"] = new SelectList(_context.Purchases, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName");
+            ViewData["PurchaseId"] = new SelectList(await _purchaseManager.GetAllAsync(), "Id", "PurchaseCode");
             return View();
         }
 
-        // POST: PurchaseDetails/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,PurchaseQty,Price,Discount,PurchaseId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] PurchaseDetail purchaseDetail)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(purchaseDetail);
-                await _context.SaveChangesAsync();
+
+                await _purchaseDetailManager.AddAsync(purchaseDetail);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", purchaseDetail.ProductId);
-            ViewData["PurchaseId"] = new SelectList(_context.Purchases, "Id", "Id", purchaseDetail.PurchaseId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName", purchaseDetail.ProductId);
+            ViewData["PurchaseId"] = new SelectList(await _purchaseManager.GetAllAsync(), "Id", "PurchaseCode", purchaseDetail.PurchaseId);
             return View(purchaseDetail);
         }
 
@@ -80,19 +78,16 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchaseDetail = await _context.PurchaseDetails.FindAsync(id);
+            var purchaseDetail = await _purchaseDetailManager.GetByIdAsync((int)id);
             if (purchaseDetail == null)
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", purchaseDetail.ProductId);
-            ViewData["PurchaseId"] = new SelectList(_context.Purchases, "Id", "Id", purchaseDetail.PurchaseId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "Id", purchaseDetail.ProductId);
+            ViewData["PurchaseId"] = new SelectList(await _purchaseManager.GetAllAsync(), "Id", "Id", purchaseDetail.PurchaseId);
             return View(purchaseDetail);
         }
 
-        // POST: PurchaseDetails/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,PurchaseQty,Price,Discount,PurchaseId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] PurchaseDetail purchaseDetail)
@@ -106,12 +101,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(purchaseDetail);
-                    await _context.SaveChangesAsync();
+
+                    await _purchaseDetailManager.UpdateAsync(purchaseDetail);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PurchaseDetailExists(purchaseDetail.Id))
+                    bool PurchaseDetailExists = await _purchaseDetailManager.GetByIdAsync(id)!=null;
+                    if (!PurchaseDetailExists)
                     {
                         return NotFound();
                     }
@@ -122,8 +118,8 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", purchaseDetail.ProductId);
-            ViewData["PurchaseId"] = new SelectList(_context.Purchases, "Id", "Id", purchaseDetail.PurchaseId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "Id", purchaseDetail.ProductId);
+            ViewData["PurchaseId"] = new SelectList(await _purchaseManager.GetAllAsync(), "Id", "Id", purchaseDetail.PurchaseId);
             return View(purchaseDetail);
         }
 
@@ -135,10 +131,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchaseDetail = await _context.PurchaseDetails
-                .Include(p => p.Product)
-                .Include(p => p.Purchase)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var purchaseDetail = await _purchaseDetailManager.GetByIdAsync((int)id);
             if (purchaseDetail == null)
             {
                 return NotFound();
@@ -152,15 +145,8 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var purchaseDetail = await _context.PurchaseDetails.FindAsync(id);
-            _context.PurchaseDetails.Remove(purchaseDetail);
-            await _context.SaveChangesAsync();
+            await _purchaseDetailManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PurchaseDetailExists(int id)
-        {
-            return _context.PurchaseDetails.Any(e => e.Id == id);
         }
     }
 }
