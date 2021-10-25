@@ -7,23 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class PurchasesController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly IPurchaseManager _purchaseManager;
+        private readonly ISupplierManager _supplierManager;
 
-        public PurchasesController(POSDbContext context)
+        public PurchasesController(IPurchaseManager purchaseManager, ISupplierManager supplierManager)
         {
-            _context = context;
+            _purchaseManager = purchaseManager;
+            _supplierManager = supplierManager;
         }
 
         // GET: Purchases
         public async Task<IActionResult> Index()
         {
-            var pOSDbContext = _context.Purchases.Include(p => p.Supplier);
-            return View(await pOSDbContext.ToListAsync());
+            
+            return View(await _purchaseManager.GetAllAsync());
         }
 
         // GET: Purchases/Details/5
@@ -34,9 +37,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchase = await _context.Purchases
-                .Include(p => p.Supplier)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var purchase = await _purchaseManager.GetByIdAsync((int)id);
             if (purchase == null)
             {
                 return NotFound();
@@ -46,26 +47,22 @@ namespace APP.Controllers
         }
 
         // GET: Purchases/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id");
+            ViewData["SupplierId"] = new SelectList(await _purchaseManager.GetAllAsync(), "Id", "PurchaseCode");
             return View();
         }
 
-        // POST: Purchases/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PurchaseCode,PurchaseDate,SupplierId,PurchaseAmount,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Purchase purchase)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(purchase);
-                await _context.SaveChangesAsync();
+                await _purchaseManager.AddAsync(purchase);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", purchase.SupplierId);
+            ViewData["SupplierId"] = new SelectList(await _supplierManager.GetAllAsync(), "Id", "SupplierName", purchase.SupplierId);
             return View(purchase);
         }
 
@@ -77,12 +74,12 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchase = await _context.Purchases.FindAsync(id);
+            var purchase = await _purchaseManager.GetByIdAsync((int)id);
             if (purchase == null)
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", purchase.SupplierId);
+            ViewData["SupplierId"] = new SelectList(await _supplierManager.GetAllAsync(), "Id", "SupplierName", purchase.SupplierId);
             return View(purchase);
         }
 
@@ -102,12 +99,12 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(purchase);
-                    await _context.SaveChangesAsync();
+                    await _purchaseManager.AddAsync(purchase);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PurchaseExists(purchase.Id))
+                    bool PurchaseExists = await _purchaseManager.GetByIdAsync(id)!=null;
+                    if (!PurchaseExists)
                     {
                         return NotFound();
                     }
@@ -118,7 +115,7 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", purchase.SupplierId);
+            ViewData["SupplierId"] = new SelectList(await _supplierManager.GetAllAsync(), "Id", "SupplierName", purchase.SupplierId);
             return View(purchase);
         }
 
@@ -130,9 +127,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var purchase = await _context.Purchases
-                .Include(p => p.Supplier)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var purchase = await _purchaseManager.GetByIdAsync((int)id);
             if (purchase == null)
             {
                 return NotFound();
@@ -146,15 +141,9 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var purchase = await _context.Purchases.FindAsync(id);
-            _context.Purchases.Remove(purchase);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool PurchaseExists(int id)
-        {
-            return _context.Purchases.Any(e => e.Id == id);
+            await _purchaseManager.RemoveAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
