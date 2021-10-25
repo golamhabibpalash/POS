@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly ISupplierManager _supplierManager;
 
-        public SuppliersController(POSDbContext context)
+        public SuppliersController(ISupplierManager supplierManager)
         {
-            _context = context;
+            _supplierManager = supplierManager;
         }
 
         // GET: Suppliers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Suppliers.ToListAsync());
+            return View(await _supplierManager.GetAllAsync());
         }
 
         // GET: Suppliers/Details/5
@@ -33,8 +34,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var supplier = await _supplierManager.GetByIdAsync((int)id);
             if (supplier == null)
             {
                 return NotFound();
@@ -49,17 +49,13 @@ namespace APP.Controllers
             return View();
         }
 
-        // POST: Suppliers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SupplierName,Phone,Email,Image,Address,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(supplier);
-                await _context.SaveChangesAsync();
+                await _supplierManager.AddAsync(supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
@@ -73,7 +69,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers.FindAsync(id);
+            var supplier = await _supplierManager.GetByIdAsync((int)id);
             if (supplier == null)
             {
                 return NotFound();
@@ -81,9 +77,6 @@ namespace APP.Controllers
             return View(supplier);
         }
 
-        // POST: Suppliers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("SupplierName,Phone,Email,Image,Address,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier)
@@ -97,12 +90,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(supplier);
-                    await _context.SaveChangesAsync();
+
+                    await _supplierManager.UpdateAsync(supplier);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SupplierExists(supplier.Id))
+                    bool supplierExists = await _supplierManager.GetByIdAsync(id)!=null;
+                    if (!supplierExists)
                     {
                         return NotFound();
                     }
@@ -124,8 +118,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var supplier = await _supplierManager.GetByIdAsync((int)id);
             if (supplier == null)
             {
                 return NotFound();
@@ -139,15 +132,9 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var supplier = await _context.Suppliers.FindAsync(id);
-            _context.Suppliers.Remove(supplier);
-            await _context.SaveChangesAsync();
+            await _supplierManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SupplierExists(int id)
-        {
-            return _context.Suppliers.Any(e => e.Id == id);
-        }
     }
 }
