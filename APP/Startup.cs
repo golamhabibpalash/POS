@@ -65,16 +65,14 @@ namespace APP
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
 
-            
+            services.AddTransient<IBrandManager, BrandManager>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
 
             services.AddTransient<ICategoryManager, CategoryManager>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
 
-            services.AddTransient<IBrandManager, BrandManager>();
-            services.AddTransient<IBrandRepository, BrandRepository>();
-
-            services.AddTransient<IProductTypeManager, ProductTypeManager>();
-            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+            services.AddTransient<ICustomerManager, CustomerManager>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
 
             services.AddTransient<IProductManager, ProductManager>();
             services.AddTransient<IProductRepository, ProductRepository>();
@@ -82,9 +80,44 @@ namespace APP
             services.AddTransient<IProductColorManager, ProductColorManager>();
             services.AddTransient<IProductColorRepository, ProductColorRepository>();
 
+            //services.AddTransient<IProductFeatureManager, ProductFeatureManager>();
+            //services.AddTransient<IProductFeatureRepository, ProductFeatureRepository>();
+
+            //services.AddTransient<IProductFeatureDetailManager, ProductFeatureDetailManager>();
+            //services.AddTransient<IProductFeatureDetailRepository, ProductFeatureDetailRepository>();
+
             services.AddTransient<IProductSizeManager, ProductSizeManager>();
             services.AddTransient<IProductSizeRepository, ProductSizeRepository>();
 
+            services.AddTransient<IProductTypeManager, ProductTypeManager>();
+            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+
+            services.AddTransient<IPurchaseManager, PurchaseManager>();
+            services.AddTransient<IPurchaseRepository, PurchaseRepository>();
+
+            services.AddTransient<IPurchaseDetailManager, PurchaseDetailManager>();
+            services.AddTransient<IPurchaseDetailRepository, PurchaseDetailRepository>();
+
+            //services.AddTransient<IPurchaseTypeManager, PurchaseTypeManager>();
+            //services.AddTransient<IPurchaseTypeRepository, PurchaseTypeRepository>();
+
+            services.AddTransient<ISaleManager, SaleManager>();
+            services.AddTransient<ISaleRepository, SaleRepository>();
+
+            //services.AddTransient<ISaleDetailManager, SaleManager>();
+            //services.AddTransient<ISaleDetailRepository, SaleRepository>();
+
+            //services.AddTransient<ISaleTypeManager, SaleTypeManager>();
+            //services.AddTransient<ISaleTypeRepository, SaleTypeRepository>();
+
+            services.AddTransient<ISupplierManager, SupplierManager>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+
+            //services.AddTransient<ISupplierTypeManager, SupplierTypeManager>();
+            //services.AddTransient<ISupplierTypeRepository, SupplierTypeRepository>();
+
+            services.AddTransient<IUnitOfMeasureManager, UnitOfMeasureManager>();
+            services.AddTransient<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
