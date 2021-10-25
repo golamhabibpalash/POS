@@ -15,11 +15,15 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SaleId" class="control-label"></label>
-                <select asp-for="SaleId" class ="form-control" asp-items="ViewBag.SaleId"></select>
+                <select asp-for="SaleId" class="form-control" asp-items="ViewBag.SaleId">
+                    <option disabled selected>-Select Sale Order-</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId">
+                    <option disabled selected>-Select Product-</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="SaleQty" class="control-label"></label>
@@ -28,7 +32,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
+                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId">
+                    <option disabled selected >-Select Customer-</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedBy" class="control-label"></label>

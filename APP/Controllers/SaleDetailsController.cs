@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
+using BLL.IManagers;
 
 namespace APP.Controllers
 {
     public class SaleDetailsController : Controller
     {
-        private readonly POSDbContext _context;
+        private readonly ISaleDetailManager _saleDetailManager;
+        private readonly IProductManager _productManager;
+        private readonly ICustomerManager _customerManager;
+        private readonly ISaleManager _saleManager;
 
-        public SaleDetailsController(POSDbContext context)
+
+        public SaleDetailsController(ISaleDetailManager saleDetailManager, IProductManager productManager, ICustomerManager customerManager, ISaleManager saleManager)
         {
-            _context = context;
+            _saleDetailManager = saleDetailManager;
+            _productManager = productManager;
+            _customerManager = customerManager;
+            _saleManager = saleManager;
         }
 
         // GET: SaleDetails
         public async Task<IActionResult> Index()
         {
-            var pOSDbContext = _context.SaleDetails.Include(s => s.Customer).Include(s => s.Product).Include(s => s.Sale);
-            return View(await pOSDbContext.ToListAsync());
+            return View(await _saleDetailManager.GetAllAsync());
         }
 
         // GET: SaleDetails/Details/5
@@ -34,11 +41,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var saleDetail = await _context.SaleDetails
-                .Include(s => s.Customer)
-                .Include(s => s.Product)
-                .Include(s => s.Sale)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var saleDetail = await _saleDetailManager.GetByIdAsync((int)id);
             if (saleDetail == null)
             {
                 return NotFound();
@@ -48,30 +51,26 @@ namespace APP.Controllers
         }
 
         // GET: SaleDetails/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
-            ViewData["SaleId"] = new SelectList(_context.Sales, "Id", "Id");
+            ViewData["CustomerId"] = new SelectList(await _customerManager.GetAllAsync(), "Id", "CustomerName");
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName");
+            ViewData["SaleId"] = new SelectList(await _saleManager.GetAllAsync(), "Id", "SaleCode");
             return View();
         }
 
-        // POST: SaleDetails/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SaleId,ProductId,SaleQty,CustomerId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] SaleDetail saleDetail)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(saleDetail);
-                await _context.SaveChangesAsync();
+                await _saleDetailManager.AddAsync(saleDetail);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", saleDetail.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", saleDetail.ProductId);
-            ViewData["SaleId"] = new SelectList(_context.Sales, "Id", "Id", saleDetail.SaleId);
+            ViewData["CustomerId"] = new SelectList(await _customerManager.GetAllAsync(), "Id", "CustomerName", saleDetail.CustomerId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName", saleDetail.ProductId);
+            ViewData["SaleId"] = new SelectList(await _saleManager.GetAllAsync(), "Id", "SaleCode", saleDetail.SaleId);
             return View(saleDetail);
         }
 
@@ -83,20 +82,18 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var saleDetail = await _context.SaleDetails.FindAsync(id);
+            var saleDetail = await _saleDetailManager.GetByIdAsync((int)id);
             if (saleDetail == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", saleDetail.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", saleDetail.ProductId);
-            ViewData["SaleId"] = new SelectList(_context.Sales, "Id", "Id", saleDetail.SaleId);
+            ViewData["CustomerId"] = new SelectList(await _customerManager.GetAllAsync(), "Id", "CustomerName", saleDetail.CustomerId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName", saleDetail.ProductId);
+            ViewData["SaleId"] = new SelectList(await _saleManager.GetAllAsync(), "Id", "SaleCode", saleDetail.SaleId);
             return View(saleDetail);
         }
 
-        // POST: SaleDetails/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("SaleId,ProductId,SaleQty,CustomerId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] SaleDetail saleDetail)
@@ -110,12 +107,13 @@ namespace APP.Controllers
             {
                 try
                 {
-                    _context.Update(saleDetail);
-                    await _context.SaveChangesAsync();
+
+                    await _saleDetailManager.UpdateAsync(saleDetail);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SaleDetailExists(saleDetail.Id))
+                    bool SaleDetailExists = await _saleDetailManager.GetByIdAsync(id) != null;
+                    if (!SaleDetailExists)
                     {
                         return NotFound();
                     }
@@ -126,9 +124,9 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", saleDetail.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", saleDetail.ProductId);
-            ViewData["SaleId"] = new SelectList(_context.Sales, "Id", "Id", saleDetail.SaleId);
+            ViewData["CustomerId"] = new SelectList(await _customerManager.GetAllAsync(), "Id", "CustomerName", saleDetail.CustomerId);
+            ViewData["ProductId"] = new SelectList(await _productManager.GetAllAsync(), "Id", "ProductName", saleDetail.ProductId);
+            ViewData["SaleId"] = new SelectList(await _saleManager.GetAllAsync(), "Id", "SaleCode", saleDetail.SaleId);
             return View(saleDetail);
         }
 
@@ -140,11 +138,7 @@ namespace APP.Controllers
                 return NotFound();
             }
 
-            var saleDetail = await _context.SaleDetails
-                .Include(s => s.Customer)
-                .Include(s => s.Product)
-                .Include(s => s.Sale)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var saleDetail = await _saleDetailManager.GetByIdAsync((int)id);
             if (saleDetail == null)
             {
                 return NotFound();
@@ -158,15 +152,9 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var saleDetail = await _context.SaleDetails.FindAsync(id);
-            _context.SaleDetails.Remove(saleDetail);
-            await _context.SaveChangesAsync();
+            await _saleDetailManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SaleDetailExists(int id)
-        {
-            return _context.SaleDetails.Any(e => e.Id == id);
-        }
     }
 }
