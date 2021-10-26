@@ -1,5 +1,25 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model MODELS.ProductColor
+
+<div class="form-group row">
+    <label asp-for="ColorName" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <input class="form-control" asp-for="ColorName">
+        <span asp-validation-for="ColorName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="ColorCode" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <div class="input-group">
+            <input class="form-control p-0 col-md-6" asp-for="ColorCode" type="color">
+            <input type="text" readonly disabled />
+        </div>
+        <span asp-validation-for="ColorCode" class="text-danger"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9 offset-sm-3 text-md-right">
+        <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Add </button>
+        <button type="button" class="btn btn-secondary" id="cancelButton" data-dismiss="modal">Close</button>
+    </div>
+</div>

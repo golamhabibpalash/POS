@@ -19,7 +19,8 @@ namespace APP.Controllers
         private readonly IProductColorManager _productColorManager;
         private readonly IProductSizeManager _productSizeManager;
         private readonly IProductTypeManager _productTypeManager;
-        public ProductsController(IProductManager productManager, IBrandManager brandManager, ICategoryManager categoryManager, IProductColorManager productColorManager, IProductSizeManager productSizeManager, IProductTypeManager productTypeManager)
+        private readonly IUnitOfMeasureManager _unitOfMeasureManager;
+        public ProductsController(IProductManager productManager, IBrandManager brandManager, ICategoryManager categoryManager, IProductColorManager productColorManager, IProductSizeManager productSizeManager, IProductTypeManager productTypeManager, IUnitOfMeasureManager unitOfMeasureManager)
         {
             _productManager = productManager;
             _brandManager = brandManager;
@@ -27,6 +28,7 @@ namespace APP.Controllers
             _productColorManager = productColorManager;
             _productSizeManager = productSizeManager;
             _productTypeManager = productTypeManager;
+            _unitOfMeasureManager = unitOfMeasureManager;
         }
 
         // GET: Products
@@ -61,6 +63,7 @@ namespace APP.Controllers
             ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName");
             ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName");
             ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName");
+            ViewData["UnitOfMeasureId"] = new SelectList(await _unitOfMeasureManager.GetAllAsync(), "Id", "UnitName"); 
             return View();
         }
 
@@ -79,6 +82,7 @@ namespace APP.Controllers
             ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
             ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
             ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
+            ViewData["UnitOfMeasureId"] = new SelectList(await _unitOfMeasureManager.GetAllAsync(), "Id", "UnitName", product.UnitOfMeasureId);
             return View(product);
         }
 
@@ -100,6 +104,7 @@ namespace APP.Controllers
             ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
             ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
             ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
+            ViewData["UnitOfMeasureId"] = new SelectList(await _unitOfMeasureManager.GetAllAsync(), "Id", "UnitName", product.UnitOfMeasureId);
             return View(product);
         }
 
@@ -138,6 +143,7 @@ namespace APP.Controllers
             ViewData["ProductColorId"] = new SelectList(await _productColorManager.GetAllAsync(), "Id", "ColorName", product.ProductColorId);
             ViewData["ProductSizeId"] = new SelectList(await _productSizeManager.GetAllAsync(), "Id", "SizeName", product.ProductSizeId);
             ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetAllAsync(), "Id", "TypeName", product.ProductTypeId);
+            ViewData["UnitOfMeasureId"] = new SelectList(await _unitOfMeasureManager.GetAllAsync(), "Id", "UnitName", product.UnitOfMeasureId);
             return View(product);
         }
 

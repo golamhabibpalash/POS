@@ -9,7 +9,7 @@ namespace MODELS
 {
     public class Brand : CommonProps
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Brand Name")]
         public string BrandName { get; set; }
         public string Logo { get; set; }
 

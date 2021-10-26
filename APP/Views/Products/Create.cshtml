@@ -243,6 +243,29 @@
         </div>
     </div>
 
+    @*Modal for Unit*@
+    <div class="modal fade" id="unitOfMeasureIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add new color</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="unitOfMeasurementsCreateForm">
+                        @await Component.InvokeAsync("UnitOfMeasurements")
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
     @*Modal for Color*@
     <div class="modal fade" id="productColorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -254,11 +277,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    @await Component.InvokeAsync("ProductColors")
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                   
                 </div>
             </div>
         </div>
@@ -275,11 +297,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form id="SizeCreateForm" method="post">
+                        @await Component.InvokeAsync("ProductSizes")
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -315,6 +337,7 @@
             $('#pageRefresh').click(function () {
                 location.reload();
             });
+
             $('#productTypeModal').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
@@ -379,6 +402,28 @@
                 });
             });
 
+
+            $('#unitOfMeasurementsCreateForm').submit(function (e) {
+                e.preventDefault();
+                var fdata = new FormData(this);
+                var url = "/UnitOfMeasurements/CreateByJson";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $('#unitOfMeasureIdModal').modal('hide');
+                    },
+                    error: function (err) {
+
+                    }
+                });
+            });
+
             $('#ColorCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
@@ -403,7 +448,7 @@
             $('#SizeCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
-                var url = "/sizesController/CreateByJson";
+                var url = "/ProductSizesController/CreateByJson";
 
                 $.ajax({
                     url: url,
@@ -413,7 +458,7 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $(this).hide();
+                        $('#productSizeModal').modal('hide');
                     },
                     error: function (err) {
 

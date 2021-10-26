@@ -1,0 +1,24 @@
+﻿@model MODELS.UnitOfMeasure
+
+<div class="form-group row">
+    <label asp-for="UnitName" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <input class="form-control" asp-for="UnitName">
+        <span asp-validation-for="UnitName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Description" class="col-sm-3 col-form-label text-md-right"></label>
+    <div class="col-sm-9">
+        <div class="input-group">
+            <textarea class="form-control" asp-for="Description" rows="2"></textarea>
+        </div>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9 offset-sm-3 text-md-right">
+        <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Add </button>
+        <button type="button" class="btn btn-secondary" id="cancelButton" data-dismiss="modal">Close</button>
+    </div>
+</div>

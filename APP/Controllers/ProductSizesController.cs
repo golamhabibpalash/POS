@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
 using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
@@ -139,6 +140,17 @@ namespace APP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+        [HttpPost]
+        public async Task<JsonResult> CreateByJson(ProductSize model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.CreatedAt = DateTime.Now;
+                model.CreatedBy = HttpContext.Session.GetString("UserId");
+                await _productSiseManager.AddAsync(model);
+                return Json("");
+            }
+            return Json("");
+        }
     }
 }
