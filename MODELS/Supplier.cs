@@ -15,5 +15,8 @@ namespace MODELS
         public string Email { get; set; }
         public string Image { get; set; }
         public string Address { get; set; }
+        [Display(Name = "Supplier Type")]
+        public int SupplierTypeId { get; set; }
+        public SupplierType SupplierType { get; set; }
     }
 }

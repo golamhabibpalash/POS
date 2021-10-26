@@ -113,8 +113,8 @@ namespace APP
             services.AddTransient<ISupplierManager, SupplierManager>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
 
-            //services.AddTransient<ISupplierTypeManager, SupplierTypeManager>();
-            //services.AddTransient<ISupplierTypeRepository, SupplierTypeRepository>();
+            services.AddTransient<ISupplierTypeManager, SupplierTypeManager>();
+            services.AddTransient<ISupplierTypeRepository, SupplierTypeRepository>();
 
             services.AddTransient<IUnitOfMeasureManager, UnitOfMeasureManager>();
             services.AddTransient<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
