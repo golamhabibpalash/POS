@@ -20,15 +20,20 @@
                 <div class="form-group row">
                     <label asp-for="PurchaseDate" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
-                        <input asp-for="PurchaseDate" class="form-control" value="@DateTime.Today.Date" placeholder="@DateTime.Today.Date">
+                        <input asp-for="PurchaseDate" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="SupplierId" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
-                        <select asp-for="SupplierId" class="form-control">
-                            <option value="value">text</option>
-                        </select>
+                        <div class="input-group">
+                            <select asp-for="SupplierId" class=" form-control" asp-items="@ViewBag.SupplierId">
+                                <option selected disabled>Choose...</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-info btn-sm" type="button">+ Add</button>
+                            </div>
+                        </div> 
                     </div>
                 </div>
                 <div class="form-group row">
@@ -40,9 +45,14 @@
                 <div class="form-group row">
                     <label asp-for="ProductId" class="col-sm-2 col-form-label text-md-right"></label>
                     <div class="col-sm-10">
-                        <select asp-for="ProductId" class="form-control" asp-items="@ViewBag.productList">
-                            <option value="value">text</option>
-                        </select>
+                        <div class="input-group">
+                            <select asp-for="ProductId" class="form-control" asp-items="@ViewBag.productList">
+                                <option selected disabled>Input Product</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-info btn-sm" type="button">+ Add</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
