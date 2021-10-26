@@ -10,7 +10,7 @@ using MODELS;
 using BLL.IManagers;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using APP.VIewModels.BrandVM;
+using APP.ViewModels.BrandVM;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 

@@ -1,15 +1,124 @@
-﻿@model MODELS.Purchase
-
+﻿@model APP.ViewModels.PurchaseVM.CreatePurchaseVM
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Purchase</h4>
+<div class="row ">
+    <div class="col-12 text-center p-2">
+        <h4>Purchase Product</h4>
+    </div>
+</div>
 <hr />
+
+
+
 <div class="row">
+    <form class="col-md-12" asp-action="Create" asp-controller="Purchase" method="post">
+        <div class="row">
+            <div class="col-md-8 col-sm-12">
+                <div class="form-group row">
+                    <label asp-for="PurchaseDate" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="PurchaseDate" class="form-control" value="@DateTime.Today.Date" placeholder="@DateTime.Today.Date">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="SupplierId" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <select asp-for="SupplierId" class="form-control">
+                            <option value="value">text</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PurchaseCode" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="PurchaseCode" readonly disabled class="form-control" placeholder="Auto Generated Code">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ProductId" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <select asp-for="ProductId" class="form-control" asp-items="@ViewBag.productList">
+                            <option value="value">text</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Price" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="Price" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PurchaseQty" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="PurchaseQty" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PurchaseDetailRemark" class="col-sm-2 col-form-label text-md-right"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="PurchaseDetailRemark" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="row">
+                    <img src="~/images/Product/noimage.png" class="img-fluid" alt="Alternate Text" />
+                </div>
+                <div class="row pt-md-4">
+                        <button type="submit" class="btn-info btn">Add Product</button>
+                        <button class="btn btn-warning">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<hr />
+
+
+
+
+<div class="row">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Product Name</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Discount</td>
+                <td>Total</td>
+                <td colspan="2">Remark</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#</td>
+                <td>Product Name</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Discount</td>
+                <td>Total</td>
+                <td colspan="2">Remark</td>
+                <td>
+                    <button class="btn btn-sm btn-info">Edit</button>
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+        <tr>
+            <td colspan="5" class="text-md-right">Total</td>
+            <td></td>
+            <td colspan="3"></td>
+        </tr>
+    </table>
+</div>
+@*<div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -57,7 +166,7 @@
             </div>
         </form>
     </div>
-</div>
+</div>*@
 
 <div>
     <a asp-action="Index">Back to List</a>

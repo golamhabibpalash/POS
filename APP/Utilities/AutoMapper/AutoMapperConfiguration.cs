@@ -1,5 +1,5 @@
-﻿using APP.VIewModels.BrandVM;
-using APP.VIewModels.CategoryVM;
+﻿using APP.ViewModels.BrandVM;
+using APP.ViewModels.CategoryVM;
 using AutoMapper;
 using MODELS;
 using System;

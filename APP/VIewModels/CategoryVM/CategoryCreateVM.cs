@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace APP.VIewModels.CategoryVM
+namespace APP.ViewModels.CategoryVM
 {
     public class CategoryCreateVM
     {

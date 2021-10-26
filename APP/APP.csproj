@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="VIewModels\Product.VM\" />
+    <Folder Include="ViewModels\Product.VM\" />
     <Folder Include="wwwroot\images\Brand\" />
     <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>

@@ -9,7 +9,7 @@ using DB;
 using MODELS;
 using BLL.IManagers;
 using Microsoft.AspNetCore.Http;
-using APP.VIewModels.CategoryVM;
+using APP.ViewModels.CategoryVM;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
