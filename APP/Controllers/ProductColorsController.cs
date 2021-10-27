@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
 using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
@@ -137,7 +138,18 @@ namespace APP.Controllers
             await _productColorManager.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        public async Task<JsonResult> CreateByJson(ProductColor model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.CreatedAt = DateTime.Now;
+                model.CreatedBy = HttpContext.Session.GetString("UserId");
 
+                await _productColorManager.AddAsync(model);
+                return Json("");
+            }
+            return Json("");
+        }
         
     }
 }

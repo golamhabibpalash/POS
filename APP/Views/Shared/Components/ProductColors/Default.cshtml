@@ -11,8 +11,8 @@
     <label asp-for="ColorCode" class="col-sm-3 col-form-label text-md-right"></label>
     <div class="col-sm-9">
         <div class="input-group">
-            <input class="form-control p-0 col-md-6" asp-for="ColorCode" type="color">
-            <input type="text" readonly disabled />
+            <input class="form-control p-0 col-md-6 border-0" asp-for="ColorCode" type="color">
+            <input id="colorCodeTextBox" type="text" readonly disabled />
         </div>
         <span asp-validation-for="ColorCode" class="text-danger"></span>
     </div>

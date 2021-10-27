@@ -12,7 +12,7 @@ namespace MODELS
         [Display(Name="Size Name")]
         public string SizeName { get; set; }
 
-        [Display(Name ="Sort Name")]
+        [Display(Name ="Short Name")]
         public string ShortName { get; set; }
         public string Description { get; set; }
     }

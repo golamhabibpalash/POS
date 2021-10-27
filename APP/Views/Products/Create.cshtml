@@ -122,7 +122,7 @@
                         <label asp-for="ProductColorId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <select asp-for="ProductColorId" class="form-control">
+                                <select asp-for="ProductColorId" class="form-control" asp-items="@ViewBag.ProductColorId">
                                     <option>Select</option>
                                 </select>
                                 <div class="input-group-append">
@@ -135,7 +135,7 @@
                         <label asp-for="ProductSizeId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <select asp-for="ProductSizeId" class="form-control">
+                                <select asp-for="ProductSizeId" class="form-control" asp-items="@ViewBag.ProductSizeId">
                                     <option>Select</option>
                                 </select>
                                 <div class="input-group-append">
@@ -198,6 +198,27 @@
 @*Code for Modal*@
 <div class="row text-dark">
     <!-- Button trigger modal -->
+    @*Modal for Type*@
+    <div class="modal fade text-dark" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Product Type</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="ProductTypeCreateForm" method="post">
+                        @await Component.InvokeAsync("ProductTypes");
+                    </form>
+                </div>
+                <div class="modal-footer" style="display:none">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal for Category-->
     <div class="modal fade" id="catagoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -260,7 +281,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                   
+
                 </div>
             </div>
         </div>
@@ -277,10 +298,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @await Component.InvokeAsync("ProductColors")
+                    <form id="ColorCreateForm" method="post">
+                        @await Component.InvokeAsync("ProductColors")
+                    </form>
                 </div>
                 <div class="modal-footer">
-                   
+
                 </div>
             </div>
         </div>
@@ -307,27 +330,7 @@
         </div>
     </div>
 
-    @*Modal for Type*@
-    <div class="modal fade text-dark" id="productTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Product Type</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="ProductTypeCreateForm" method="post">
-                        @await Component.InvokeAsync("ProductTypes");
-                    </form>
-                </div>
-                <div class="modal-footer" style="display:none">
 
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @section Scripts {
@@ -338,7 +341,13 @@
                 location.reload();
             });
 
-            $('#productTypeModal').submit(function (e) {
+            //Code for COlor COde show in text box
+            $('#ColorCode').change(function () {
+                let cc = $(this).val();
+                $('#colorCodeTextBox').val(cc);
+            });
+
+            $('#ProductTypeCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
                 var url = "/ProductTypes/CreateByJson";
@@ -351,7 +360,8 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $('#ProductTypeModal').hide();
+                        $('#productTypeModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
@@ -427,7 +437,7 @@
             $('#ColorCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
-                var url = "/Categories/CreateByJson";
+                var url = "/ProductColors/CreateByJson";
 
                 $.ajax({
                     url: url,
@@ -437,7 +447,7 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $(this).hide();
+                        $('#productColorModal').modal('hide');
                     },
                     error: function (err) {
 
@@ -448,7 +458,7 @@
             $('#SizeCreateForm').submit(function (e) {
                 e.preventDefault();
                 var fdata = new FormData(this);
-                var url = "/ProductSizesController/CreateByJson";
+                var url = "/ProductSizes/CreateByJson";
 
                 $.ajax({
                     url: url,
@@ -459,6 +469,7 @@
                     contentType: false,
                     success: function (data) {
                         $('#productSizeModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
@@ -466,6 +477,8 @@
                 });
             });
         });
+
+
 
         //Code for Image upload view
         function readURL(input) {

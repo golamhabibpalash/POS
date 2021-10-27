@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
 using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace APP.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly ICustomerManager _customerManager;
+        private readonly IWebHostEnvironment _host;
 
-        public CustomersController(ICustomerManager customerManager)
+        public CustomersController(ICustomerManager customerManager, IWebHostEnvironment host)
         {
             _customerManager = customerManager;
+            _host = host;
         }
 
         // GET: Customers
@@ -55,10 +60,24 @@ namespace APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerName,PhoneNo,Email,CustomerPhoto,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerName,PhoneNo,Email,CustomerPhoto,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Customer customer, IFormFile cPhoto)
         {
             if (ModelState.IsValid)
             {
+                string fileName = "";
+                if (cPhoto!=null)
+                {
+                    fileName = "Customer_" + Guid.NewGuid() + Path.GetExtension(cPhoto.FileName);
+                    var f = Path.Combine(_host.WebRootPath, "images/Customer", fileName);
+                    using (var stream = new FileStream(f,FileMode.CreateNew))
+                    {
+                        await cPhoto.CopyToAsync(stream);
+                    }
+                    customer.CustomerPhoto = fileName;
+                }
+                customer.CreatedAt = DateTime.Now;
+                customer.CreatedBy = HttpContext.Session.GetString("UserId");
+
                 await _customerManager.AddAsync(customer);
                 return RedirectToAction(nameof(Index));
             }

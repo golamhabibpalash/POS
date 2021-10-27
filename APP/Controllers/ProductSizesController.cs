@@ -140,7 +140,7 @@ namespace APP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+
         public async Task<JsonResult> CreateByJson(ProductSize model)
         {
             if (ModelState.IsValid)
@@ -152,5 +152,6 @@ namespace APP.Controllers
             }
             return Json("");
         }
+
     }
 }

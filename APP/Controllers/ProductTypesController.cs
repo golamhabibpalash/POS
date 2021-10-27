@@ -155,6 +155,7 @@ namespace APP.Controllers
                 productType.CreatedAt = DateTime.Now;
                 productType.CreatedBy = HttpContext.Session.GetString("UserId");
                 await _productTypeManager.AddAsync(productType);
+                return Json("");
             }
             return Json("");
         }
