@@ -67,12 +67,15 @@ namespace APP.Controllers
                 {
                     var root = _host.WebRootPath;
                     var folder = "images/Supplier";
-                    var fileName = "Supplier_" + Guid.NewGuid() + Path.GetExtension(supplierImage.FileName);
-                    var f = Path.Combine(root,folder,fileName);
-                    using (var stream = new FileStream(FileMode.Create))
+                    var imageName = "Supplier_"+Guid.NewGuid()+Path.GetExtension(supplierImage.FileName);
+                    var combine = Path.Combine(root, folder, imageName);
+                    using (var stream = new FileStream(combine,FileMode.Create))
                     {
-                         
+                        await supplierImage.CopyToAsync(stream);
                     }
+
+                    supplier.Image = imageName;
+
                 }
                 supplier.CreatedAt = DateTime.Now;
                 supplier.CreatedBy = HttpContext.Session.GetString("UserId");

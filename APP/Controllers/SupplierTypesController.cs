@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,14 @@ namespace APP.Controllers
 {
     public class SupplierTypesController : Controller
     {
-        // GET: SupplierTypesController
+        public SupplierTypesController(ISupplierTypeManager supplierTypeManager)
+        {
+
+        }
+
         public ActionResult Index()
         {
+
             return View();
         }
 

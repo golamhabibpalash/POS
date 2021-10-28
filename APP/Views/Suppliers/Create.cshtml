@@ -13,7 +13,7 @@
 <hr class="bg-light" />
 <div class="row">
     <div class="col-sm-12 col-md-10 offset-md-1">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" asp-controller="Suppliers" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-8">
@@ -56,7 +56,7 @@
                         <label asp-for="SupplierTypeId" class="control-label col-form-label col-md-2 text-md-right"></label>
                         <div class="col-md-10">
                             <select asp-for="SupplierTypeId" class="form-control" asp-items="@ViewBag.SupplierList">
-                                <option value="value">-Select Supplier Type-</option>
+                                <option selected disabled>-Select Supplier Type-</option>
                             </select>
                             <span asp-validation-for="SupplierTypeId" class="text-danger"></span>
                         </div>
