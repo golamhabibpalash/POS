@@ -3,16 +3,16 @@
 @{
     ViewData["Title"] = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int sl = 0;
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
+            <th>#</th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
@@ -20,31 +20,7 @@
                 @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BarCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AlertQty)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitOfMeasureId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ManufacturingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpiryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPurchasePrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitSellingPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Weight)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -53,96 +29,54 @@
                 @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductType)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ProductColor)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductSize)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
+                <partial name="PartialViews/_Create" />
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>@(++sl)</td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
+                <img src="~/images/Product/@item.Image" alt="Product Image" class="img-fluid" width="120" />
+            </td>            
             <td>
-                @Html.DisplayFor(modelItem => item.BarCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlertQty)
-            </td>
-            <td>
+                @item.Weight
                 @Html.DisplayFor(modelItem => item.UnitOfMeasure.UnitName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.ManufacturingDate)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpiryDate)
+                @Html.DisplayFor(modelItem => item.Brand.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UnitPurchasePrice)
+                @if (item.ProductColor == null)
+                {
+                    <span>None</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.ProductColor.ColorName)
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UnitSellingPrice)
+                @Html.DisplayFor(modelItem => item.ProductSize.SizeName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductType.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductColor.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductSize.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <partial name="PartialViews/_EditDetailDelete" model="@item.Id" />
             </td>
         </tr>
 }

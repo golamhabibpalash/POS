@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
 using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace APP.Controllers
 {
@@ -20,7 +23,8 @@ namespace APP.Controllers
         private readonly IProductSizeManager _productSizeManager;
         private readonly IProductTypeManager _productTypeManager;
         private readonly IUnitOfMeasureManager _unitOfMeasureManager;
-        public ProductsController(IProductManager productManager, IBrandManager brandManager, ICategoryManager categoryManager, IProductColorManager productColorManager, IProductSizeManager productSizeManager, IProductTypeManager productTypeManager, IUnitOfMeasureManager unitOfMeasureManager)
+        private readonly IWebHostEnvironment _webHost;
+        public ProductsController(IProductManager productManager, IBrandManager brandManager, ICategoryManager categoryManager, IProductColorManager productColorManager, IProductSizeManager productSizeManager, IProductTypeManager productTypeManager, IUnitOfMeasureManager unitOfMeasureManager, IWebHostEnvironment webHost)
         {
             _productManager = productManager;
             _brandManager = brandManager;
@@ -29,6 +33,7 @@ namespace APP.Controllers
             _productSizeManager = productSizeManager;
             _productTypeManager = productTypeManager;
             _unitOfMeasureManager = unitOfMeasureManager;
+            _webHost = webHost;
         }
 
         // GET: Products
@@ -70,10 +75,24 @@ namespace APP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductName,Image,BarCode,AlertQty,UoM,ManufacturingDate,ExpiryDate,UnitPurchasePrice,UnitSellingPrice,BrandId,CategoryId,ProductTypeId,IsAvailable,Description,ProductColorId,ProductSizeId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductName,Image,BarCode,Qty,AlertQty,UnitOfMeasureId,ManufacturingDate,ExpiryDate,UnitPurchasePrice,UnitSellingPrice,BrandId,CategoryId,ProductTypeId,IsAvailable,Description,Weight,ProductColorId,ProductSizeId,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Product product, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
+                if (productImage!=null)
+                {
+                    string fileName = "Product_" + Guid.NewGuid() + Path.GetExtension(productImage.FileName);
+                    string root = _webHost.WebRootPath;
+                    string folder = "images/product";
+                    var f = Path.Combine(root, folder, fileName);
+                    using (var fileStream = new FileStream(f, FileMode.Create))
+                    {
+                        await productImage.CopyToAsync(fileStream);
+                    }
+                    product.Image = fileName;
+                }
+                product.CreatedAt = DateTime.Now;
+                product.CreatedBy = HttpContext.Session.GetString("UserId");
                 await _productManager.AddAsync(product);
                 return RedirectToAction(nameof(Index));
             }

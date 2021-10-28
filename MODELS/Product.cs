@@ -50,11 +50,13 @@ namespace MODELS
         public bool IsAvailable { get; set; }
         public string Description { get; set; }
 
+        public double Weight { get; set; }
+
         [Display(Name = "Color")]
-        public int ProductColorId { get; set; }
+        public int? ProductColorId { get; set; }
 
         [Display(Name = "Size")]
-        public int ProductSizeId { get; set; }
+        public int? ProductSizeId { get; set; }
 
         public Category Category { get; set; }
         public Brand Brand { get; set; }

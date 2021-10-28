@@ -4,14 +4,16 @@ using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DB.Migrations
 {
     [DbContext(typeof(POSDbContext))]
-    partial class POSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211027164652_WeightAddedInProductClass")]
+    partial class WeightAddedInProductClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,13 +198,13 @@ namespace DB.Migrations
                     b.Property<DateTime>("ManufacturingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductColorId")
+                    b.Property<int>("ProductColorId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductSizeId")
+                    b.Property<int>("ProductSizeId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductTypeId")
@@ -966,11 +968,15 @@ namespace DB.Migrations
 
                     b.HasOne("MODELS.ProductColor", "ProductColor")
                         .WithMany()
-                        .HasForeignKey("ProductColorId");
+                        .HasForeignKey("ProductColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MODELS.ProductSize", "ProductSize")
                         .WithMany()
-                        .HasForeignKey("ProductSizeId");
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MODELS.ProductType", "ProductType")
                         .WithMany("Products")

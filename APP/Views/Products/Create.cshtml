@@ -11,7 +11,7 @@
 </div>
 <div class="row pb-3 bg-myColor">
     <div class="col-md-12">
-        <form asp-action="Create" asp-controller="Products" method="post">
+        <form asp-action="Create" asp-controller="Products" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-12">
@@ -27,7 +27,7 @@
                             <div class="input-group row mb-3">
                                 <label asp-for="Image" class="control-label col-form-label col-md-3 text-md-right"></label>
                                 <div class="custom-file col-md-9 ml-md-4 row">
-                                    <input asp-for="Image" type="file" class="custom-file-input" accept="image/png, image/jpg, image/jpeg">
+                                    <input name="productImage" type="file" class="custom-file-input" accept="image/png, image/jpg, image/jpeg, image/webp">
                                     <label class="custom-file-label" for="Image">Choose file</label>
                                     <span asp-validation-for="Image" class="text-danger"></span>
                                 </div>
@@ -77,6 +77,7 @@
                             <div class="input-group">
                                 <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryId">
                                     <option>-Select-</option>
+                                    <option value="">N/A</option>
                                 </select>
                                 <div class="input-group-append">
                                     <button class="btn btn-info btn-sm" type="button" data-target="#catagoryModal" data-toggle="modal"><i class="fa fa-plus"></i></button>
@@ -96,6 +97,14 @@
                             </div>
                             <span asp-validation-for="BrandId" class="text-danger"></span>
                         </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Weight" class="control-label col-form-label col-md-2 text-md-right"></label>
+                        <div class="col-md-4">
+                            <input asp-for="Weight" class="form-control" />
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
                     </div>
                     <div class="form-group row">
                         <label asp-for="UnitOfMeasureId" class="control-label col-form-label col-md-2 text-md-right"></label>
@@ -124,6 +133,7 @@
                             <div class="input-group">
                                 <select asp-for="ProductColorId" class="form-control" asp-items="@ViewBag.ProductColorId">
                                     <option>Select</option>
+                                    <option value="">N/A</option>
                                 </select>
                                 <div class="input-group-append">
                                     <button class="btn btn-info btn-sm" type="button" data-target="#productColorModal" data-toggle="modal"><i class="fa fa-plus"></i> </button>
@@ -383,6 +393,7 @@
                     contentType: false,
                     success: function (data) {
                         $('#brandModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
@@ -405,6 +416,7 @@
                     contentType: false,
                     success: function (data) {
                         $('#catagoryModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
@@ -427,6 +439,7 @@
                     contentType: false,
                     success: function (data) {
                         $('#unitOfMeasureIdModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
@@ -448,6 +461,7 @@
                     contentType: false,
                     success: function (data) {
                         $('#productColorModal').modal('hide');
+                        location.reload();
                     },
                     error: function (err) {
 
