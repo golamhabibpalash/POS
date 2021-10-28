@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using DB;
 using MODELS;
 using BLL.IManagers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace APP.Controllers
 {
     public class SuppliersController : Controller
     {
         private readonly ISupplierManager _supplierManager;
+        private readonly ISupplierTypeManager _supplierTypeManager;
+        private readonly IWebHostEnvironment _host;
 
-        public SuppliersController(ISupplierManager supplierManager)
+        public SuppliersController(ISupplierManager supplierManager, ISupplierTypeManager supplierTypeManager, IWebHostEnvironment host)
         {
             _supplierManager = supplierManager;
+            _supplierTypeManager = supplierTypeManager;
+            _host = host;
         }
 
         // GET: Suppliers
@@ -44,20 +51,35 @@ namespace APP.Controllers
         }
 
         // GET: Suppliers/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.SupplierList = new SelectList(await _supplierTypeManager.GetAllAsync(), "Id", "SupplierTypeName");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SupplierName,Phone,Email,Image,Address,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier)
+        public async Task<IActionResult> Create([Bind("SupplierName,Phone,Email,Image,Address,SupplierTypeId,SupplierType,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier, IFormFile supplierImage)
         {
             if (ModelState.IsValid)
             {
+                if (supplierImage!=null)
+                {
+                    var root = _host.WebRootPath;
+                    var folder = "images/Supplier";
+                    var fileName = "Supplier_" + Guid.NewGuid() + Path.GetExtension(supplierImage.FileName);
+                    var f = Path.Combine(root,folder,fileName);
+                    using (var stream = new FileStream(FileMode.Create))
+                    {
+                         
+                    }
+                }
+                supplier.CreatedAt = DateTime.Now;
+                supplier.CreatedBy = HttpContext.Session.GetString("UserId");
                 await _supplierManager.AddAsync(supplier);
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.SupplierList = new SelectList(await _supplierTypeManager.GetAllAsync(), "Id", "SupplierTypeName", supplier.SupplierTypeId);
             return View(supplier);
         }
 
@@ -68,7 +90,7 @@ namespace APP.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.SupplierList = new SelectList(await _supplierTypeManager.GetAllAsync(), "Id", "SupplierTypeName");
             var supplier = await _supplierManager.GetByIdAsync((int)id);
             if (supplier == null)
             {
@@ -79,7 +101,7 @@ namespace APP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SupplierName,Phone,Email,Image,Address,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier)
+        public async Task<IActionResult> Edit(int id, [Bind("SupplierName,Phone,Email,Image,Address,SupplierTypeId,SupplierType,Id,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt")] Supplier supplier)
         {
             if (id != supplier.Id)
             {
@@ -90,7 +112,8 @@ namespace APP.Controllers
             {
                 try
                 {
-
+                    supplier.UpdatedAt = DateTime.Now;
+                    supplier.UpdatedBy = HttpContext.Session.GetString("UserId");
                     await _supplierManager.UpdateAsync(supplier);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -107,6 +130,7 @@ namespace APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.SupplierList = new SelectList(await _supplierTypeManager.GetAllAsync(), "Id", "SupplierTypeName", supplier.SupplierTypeId);
             return View(supplier);
         }
 

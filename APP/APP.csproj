@@ -28,6 +28,7 @@
     <Folder Include="ViewModels\Product.VM\" />
     <Folder Include="wwwroot\images\Brand\" />
     <Folder Include="wwwroot\images\Customer\" />
+    <Folder Include="wwwroot\images\Supplier\" />
     <Folder Include="wwwroot\Theme\Login\" />
   </ItemGroup>
 
